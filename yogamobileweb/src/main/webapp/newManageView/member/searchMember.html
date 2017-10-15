@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员管理</title>
+</head>
+
+<table id="memberView" class="easyui-datagrid" style="width:100%;height:auto"
+       data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#memberViewTool',
+                singleSelect:true,
+                pagination:true,
+                idField: 'id',
+			">
+    <thead>
+    <tr>
+        <th data-options="field:'id',hidden:true,width:80">Id</th>
+        <th data-options="field:'name',width:100">姓名</th>
+        <th data-options="field:'sex',width:50">性别</th>
+        <th data-options="field:'tel',width:100">手机</th>
+        <th data-options="field:'password',width:100">密码</th>
+        <th data-options="field:'joinDate',width:100">入会日期</th>
+        <th data-options="field:'expireDate',width:100">会员到期</th>
+        <th data-options="field:'fee',width:100">费用</th>
+        <th data-options="field:'remark',width:300">备注</th>
+    </tr>
+    </thead>
+</table>
+<div id="memberViewTool" style="height:auto">
+    <div style="float:left;">
+        <span style="font-size:1rem">会员名</span>
+        <input id="nameViewTxt" class="easyui-textbox" style="width:100px;">
+        <span style="font-size:1rem">会员手机</span>
+        <input id="telViewTxt" class="easyui-textbox" style="width:100px;">
+    </div>
+    <div class="datagrid-btn-separator" style="margin-left:20px"></div>
+    <div style="float:left;">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="memberSearch()">查询</a>
+    </div>
+    <div style="float:right;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openMemberPanel('add')">新增会员</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="openMemberPanel('edit')">编辑会员</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteMember()">删除会员</a>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div id="memberUpdateView" class="easyui-dialog" title="编辑会员" style="width:300px;height:380px;display:none;"
+     data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
+    <table>
+        <tr>
+            <td>姓名:</td>
+            <td>
+                <input id="m_nameTxt" class="easyui-textbox" data-options="required:true" style="width:150px;">
+            </td>
+        </tr>
+        <tr>
+            <td>性别:</td>
+            <td>
+                <select id="m_sexSelect" class="easyui-combobox" data-options="editable:false" style="width:150px;">
+                    <option value="女">女</option>
+                    <option value="男">男</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>电话:</td>
+            <td>
+                <input id="m_telTxt" class="easyui-textbox" data-options="required:true, validType:'mobile'" style="width:150px;">
+            </td>
+
+        </tr>
+        <tr>
+            <td>密码:</td>
+            <td>
+                <input id="m_passTxt" class="easyui-textbox" data-options="required:true" style="width:150px;">
+            </td>
+        </tr>
+        <tr>
+            <td>入会时间:</td>
+            <td><input id="m_joinDateTxt" class="easyui-datebox" data-options="required:true, sharedCalendar:'#cc', editable:false" style="width:150px;">
+            </td>
+        </tr>
+        <tr>
+            <td>会员到期:</td>
+            <td><input id="m_expireDateTxt" class="easyui-datebox" data-options="required:true, sharedCalendar:'#cc', editable:false" style="width:150px;"></td>
+        </tr>
+        <tr>
+            <td>会费:</td>
+            <td>
+                <input id="m_feeTxt" class="easyui-numberbox" value="0" data-options="precision:0,groupSeparator:',',decimalSeparator:'.',prefix:'￥'" style="width:150px;" >
+            </td>
+        </tr>
+        <tr>
+            <td>备注:</td>
+            <td>
+                <input id="m_remarkTxt" class="easyui-textbox" data-options="prompt:'最多64个字', multiline:true" style="height:100px;width:150px;">
+            </td>
+        </tr>
+        <tr >
+            <td><input id="m_idTxt" type="text" style="display:none" ></td>
+            <td style="float:right;margin-right:5px;">
+                <div id="addMemberBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="addMember()">增加新会员</div>
+                <div id="updateMemberBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="updateMember()">修改会员信息</div>
+            </td>
+        </tr>
+    </table>
+    <div id="cc" class="easyui-calendar"></div>
+</div>
+</body>
+</html>

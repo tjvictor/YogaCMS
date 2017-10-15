@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瑜伽后台管理页面</title>
+    <link rel="stylesheet" type="text/css" href="../res/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../res/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../res/css/webPublic.css">
+    <script type="text/javascript" src="../res/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../res/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../res/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../res/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../res/js/webCommon.js"></script>
+    <script type="text/javascript" src="../res/js/webOperation.js"></script>
+
+    <script language="JavaScript" type="text/javascript">
+        function insertPage(url){
+            $("#rightDiv").panel('refresh', url);
+        }
+
+        function layoutSize(){
+            var height = $(window).height();
+            $("#mainLayout").attr("style", "width:1024px; margin: 0 auto; height:" + height + "px");
+            $("#mainLayout").layout("resize", {width: "1024px", height: height + "px"});
+        }
+
+        $(window).resize(function(){
+                layoutSize();
+            });
+
+        $(function() {
+            var height = $(window).height();
+            $("#mainLayout").attr("style", "width:1024px; margin: 0 auto; height:" + height + "px");
+            $("#mainLayout").layout("resize", {width: "1024px", height: height + "px"});
+        });
+
+    </script>
+</head>
+<body>
+<div id="mainLayout" class="easyui-layout"  style="margin: 0 auto;">
+    <div id="topDiv" data-options="region:'north'," style="height:60px; vertical-align: middle;text-align: center;">
+        <img style="border-radius:0.5rem; max-width:100%; height:50px" src="../../res/img/testinglogo.jpg"/>
+    </div>
+    <div id="leftDiv" data-options="region:'west',split:true," style="width:150px;">
+        <ul>
+            <li class="ul_title">人员管理</li>
+            <!--<li class="li_item" onclick="insertPage('member/addMember.html')">增加新会员</li>-->
+            <li class="li_item" onclick="insertPage('member/searchMember.html')">会员查询</li>
+            <li class="li_item" onclick="insertPage('teacher/searchTeacher.html')">教练查询</li>
+
+            <!--<li class="ul_title">教练管理</li>
+            <li class="li_item" onclick="insertPage('teacher/addTeacher.html')">增加新教练</li>-->
+
+
+            <li class="ul_title">课程管理</li>
+            <!--<li class="li_item" onclick="insertPage('course/addCourse.html')">增加新课程</li>-->
+            <li class="li_item" onclick="insertPage('course/searchCourse.html')">课程查询</li>
+            <li class="li_item" onclick="insertPage('course/scheduleCourse.html')">课程安排</li>
+            <li class="li_item" onclick="insertPage('course/subCourseSearch.html')">课程预约</li>
+        </ul>
+    </div>
+
+    <div id="rightDiv" data-options="region:'center', href:''">
+        <input id="sub_startDateViewTxt1" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc3'"style="width:100px;">
+        <div id="cc3" class="easyui-calendar"></div>
+    </div>
+    <div id="bottomDiv" data-options="region:'south'" style="height:50px;vertical-align: middle;text-align: center;">
+        <span>版权所有</span>
+
+    </div>
+</div>
+<div id="windowsMaskDiv" class="window-mask">
+    <div class="window-mask-icon"></div>
+    <div class="window-mask-layout"></div>
+</div>
+
+<div class="clear"></div>
+</body>
+</html>

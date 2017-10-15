@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程预约</title>
+
+</head>
+<body >
+
+<script>
+    $(document).ready(function() {
+        $('#sub_startDateViewTxt').val('0');
+        $('#sub_endDateViewTxt').val('0');
+    });
+</script>
+
+<table id="subScheduleView" class="easyui-datagrid" style="width:100%;height:auto"
+       data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#subScheduleViewTool',
+                singleSelect:true,
+                idField: 'scheduleId',
+			">
+    <thead>
+    <tr>
+        <th data-options="field:'scheduleId',hidden:true,width:80">Id</th>
+        <th data-options="field:'courseName',width:100">课程名</th>
+        <th data-options="field:'teacherName',width:100">教练</th>
+        <th data-options="field:'location',width:100">地点</th>
+        <th data-options="field:'date',width:100">日期</th>
+        <th data-options="field:'startTime',width:80">开始时间</th>
+        <th data-options="field:'endTime',width:80">结束时间</th>
+        <th data-options="field:'subCount',width:80">已报</th>
+        <th data-options="field:'remainCount',width:80">剩余</th>
+    </tr>
+    </thead>
+</table>
+<div id="subScheduleViewTool" style="height:auto">
+    <div style="float:left;">
+        <span style="font-size:1rem">开始日期:</span>
+        <input id="sub_startDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc2'" style="width:100px;">
+        <span style="font-size:1rem">结束日期:</span>
+        <input id="sub_endDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc2'" style="width:100px;">
+        <div id="cc2" class="easyui-calendar"></div>
+    </div>
+    <div class="datagrid-btn-separator" style="margin-left:20px"></div>
+    <div style="float:left;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+           onclick="subScheduleSearch()">查询</a>
+        <!--<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+           onclick="resetSubScheduleSearch()">重置</a>-->
+    </div>
+
+    <div style="float:right;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-view',plain:true"
+           onclick="openSubSchedulePanel('view')">查看课程预约</a>
+        <!--        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+                   onclick="openSubSchedulePanel('add')">新增课程预约</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+                   onclick="openSubSchedulePanel('edit')">编辑课程预约</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+                   onclick="deleteSchedule()">删除课程安排</a>-->
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div id="subScheduleUpdateView" class="easyui-dialog" title="编辑课程预约" style="width:450px;height:350px;display:none;"
+     data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
+    <table style="width:100%;">
+        <tr>
+            <td>课程:</td>
+            <td>
+                <input id="sub_courseNameTxt" class="easyui-textbox" data-options="readonly:true">
+            </td>
+            <td>教练:</td>
+            <td>
+                <input id="sub_teacherNameTxt" class="easyui-textbox" data-options="readonly:true">
+            </td>
+        </tr>
+        <tr>
+            <td>地点:</td>
+            <td>
+                <input id="sub_locationTxt" class="easyui-textbox" data-options="readonly:true">
+            </td>
+            <td>时间:</td>
+            <td><input id="sub_dateTimeTxt" class="easyui-textbox" data-options="readonly:true"></td>
+        </tr>
+        <tr>
+            <td >已报:</td>
+            <td >
+                <input id="sub_subCountTxt" class="easyui-textbox" data-options="readonly:true">
+            </td>
+            <td >剩余:</td>
+            <td >
+                <input id="sub_remainCountTxt" class="easyui-textbox" data-options="readonly:true">
+            </td>
+        </tr>
+        <tr>
+            <td>已报会员:</td>
+            <td colspan="3">
+                <div class="easyui-datalist" id="sub_memberList" style="width:350px;height:200px" data-options="editable:false,valueField:'id',textField:'memberInfo'">
+                </div>
+                <input id="sub_idTxt" type="text" style="display:none">
+            </td>
+        </tr>
+        <!--<tr>
+            <td>状态:</td>
+            <td>
+                <select id="s_status" class="easyui-combobox" data-options="editable:false" style="width:100px;">
+                    <option value="开放" selected>开放</option>
+                    <option value="取消">取消</option>
+                </select>
+            </td>
+            <td><input id="s_idTxt" type="text" style="display:none"></td>
+            <td style="float:right;margin-right:5px;">
+                <div id="addScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                     onclick="addSchedule()">增加安排
+                </div>
+                <div id="updateScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                     onclick="updateSchedule()">修改安排信息
+                </div>
+            </td>
+        </tr>-->
+    </table>
+</div>
+</body>
+</html>

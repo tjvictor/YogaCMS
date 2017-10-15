@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加新会员</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>姓名:</td>
+        <td>
+            <input id="nameTxt" class="easyui-textbox" data-options="required:true" >
+        </td>
+    </tr>
+    <tr>
+        <td>性别:</td>
+        <td>
+            <select id="sexSelect" class="easyui-combobox" data-options="editable:false" style="width:200px;">
+                <option value="女">女</option>
+                <option value="男">男</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>电话:</td>
+        <td>
+            <input id="telTxt" class="easyui-textbox" data-options="required:true, validType:'mobile'">
+        </td>
+
+    </tr>
+    <tr>
+        <td>密码:</td>
+        <td>
+            <input id="passTxt" class="easyui-textbox" data-options="required:true">
+        </td>
+    </tr>
+    <tr>
+        <td>入会时间:</td>
+        <td><input id="joinDateTxt" class="easyui-datebox" data-options="required:true, sharedCalendar:'#cc'">
+        </td>
+    </tr>
+    <tr>
+        <td>会员到期:</td>
+        <td><input id="expireDateTxt" class="easyui-datebox" data-options="required:true, sharedCalendar:'#cc'"></td>
+    </tr>
+    <tr>
+        <td>会费:</td>
+        <td>
+            <input id="feeTxt" class="easyui-numberbox" data-options="precision:0,groupSeparator:',',decimalSeparator:'.',prefix:'￥'">
+        </td>
+    </tr>
+    <tr>
+        <td>备注:</td>
+        <td>
+            <input id="remarkTxt" class="easyui-textbox" data-options="prompt:'最多64个字', multiline:true" style="height:100px;">
+        </td>
+    </tr>
+    <tr >
+        <td></td>
+        <td colspan="2" style="float:right;margin-right:5px;">
+            <div id="submit" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="addMember()">提交</div>
+
+        </td>
+    </tr>
+    <tr >
+        <td></td>
+        <td colspan="2" style="float:right;margin-right:5px;"><span id="prompt"></span></td>
+    </tr>
+</table>
+<div id="cc" class="easyui-calendar"></div>
+</body>
+</html>

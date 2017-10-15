@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加新会员</title>
+    <script src="../../res/js/jquery-1.11.2.js" type="text/javascript"></script>
+    <script src="../../res/js/webCommon.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../../res/css/webPublic.css"/>
+    <script language="JavaScript">
+        function submit(){
+
+            var name = $('#nameTxt').val();
+            var sex = $('#sexSelect').val();
+            var tel = $('#telTxt').val();
+            var pwd = $('#passTxt').val();
+            var joinDate = $('#joinDateTxt').val();
+            var expireDate = $('#expireDateTxt').val();
+            var fee = $('#feeTxt').val();
+            var remark = $('#remarkTxt').val();
+
+            var postValue = { "name":name, "sex":sex, "tel":tel, "pwd":pwd, "joinDate":joinDate, "expireDate":expireDate, "fee":fee, "remark":remark  };
+
+            callAjax('/websiteService/insertMember', '', 'submitCallback','', 'POST', postValue, '.window-mask')
+
+        }
+
+    </script>
+</head>
+<body>
+<table>
+    <tr>
+        <td>姓名:</td>
+        <td><input id="nameTxt" type="text" required="required"></td>
+    </tr>
+    <tr>
+        <td>性别:</td>
+        <td>
+            <select id="sexSelect">
+                <option value="女">女</option>
+                <option value="男">男</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>电话:</td>
+        <td><input id="telTxt" type="tel" required="required">
+            </td>
+
+    </tr>
+    <tr>
+        <td>密码:</td>
+        <td><input id="passTxt" type="text" required="required"></td>
+    </tr>
+    <tr>
+        <td>入会时间:</td>
+        <td><input id="joinDateTxt" name="joinDateTxt" type="date" required="required"></td>
+    </tr>
+    <tr>
+        <td>会员到期:</td>
+        <td><input id="expireDateTxt" name="expireDateTxt" type="date" required="required"></td>
+    </tr>
+    <tr>
+        <td>会费:</td>
+        <td><input id="feeTxt" type="number" min="0" step="1"></td>
+    </tr>
+    <tr>
+        <td>备注:</td>
+        <td><textarea  id="remarkTxt" name="remarkTxt" rows="5" cols="30" placeholder="最多64个字" style="resize:none;"></textarea></td>
+    </tr>
+    <tr >
+        <td></td>
+        <td colspan="2" style="float:right;margin-right:5px;"><input id="submit" type="button" value="提交" onclick="submit()"></td>
+    </tr>
+    <tr >
+        <td></td>
+        <td colspan="2" style="float:right;margin-right:5px;"><span id="prompt"></span></td>
+    </tr>
+</table>
+<div id="windowsMaskDiv" class="window-mask">
+    <div class="window-mask-icon"></div>
+    <div class="window-mask-layout"></div>
+</div>
+</body>
+</html>

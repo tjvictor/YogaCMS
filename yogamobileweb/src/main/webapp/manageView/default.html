@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:width="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>瑜伽后台管理页面</title>
+    <script src="../res/js/jquery-1.11.2.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../res/css/webPublic.css"/>
+</head>
+
+<frameset cols="*, 1024, *" framespacing="0" frameborder="0" border="false">
+    <frame src="about:blank">
+
+    <frameset rows="10%, 80%, 10%">
+        <frame src="/manageView/top.html" noresize id="topFrame" frameborder="0" style="width:1000px">
+        <frameset cols="10%, 90%" style="width:1000px">
+            <frame id="navFrame" src="/manageView/nav.html" frameborder="1">
+            <frame id="mainFrame" src="/manageView/main.html" scrolling="yes" frameborder="1">
+        </frameset>
+        <frame src="/manageView/bottom.html" noresize id="bottomFrame" frameborder="0" style="width:1000px">
+    </frameset>
+
+    <frame src="about:blank">
+</frameset>
+
+</html>

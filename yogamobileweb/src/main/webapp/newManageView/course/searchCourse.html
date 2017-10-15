@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程管理</title>
+</head>
+<body>
+<table id="courseView" class="easyui-datagrid" style="width:100%;height:auto"
+       data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#courseViewTool',
+                singleSelect:true,
+                idField: 'id',
+			">
+    <thead>
+    <tr>
+        <th data-options="field:'id',hidden:true,width:80">Id</th>
+        <th data-options="field:'name',width:100">课程名</th>
+        <th data-options="field:'avatar',width:80,hidden:true">图片</th>
+        <th data-options="field:'avatarView',width:128,formatter:imgFormatter">图片</th>
+        <th data-options="field:'rating',width:50">难度</th>
+        <th data-options="field:'introduction',width:400">介绍</th>
+    </tr>
+    </thead>
+</table>
+<div id="courseViewTool" style="height:auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+       onclick="courseSearch()">查询</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+       onclick="openCoursePanel('add')">新增课程</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+       onclick="openCoursePanel('edit')">编辑课程</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+       onclick="deleteCourse()">删除课程</a>
+</div>
+
+<div id="courseUpdateView" class="easyui-dialog" title="编辑课程" style="width:450px;height:350px;display:none;"
+     data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
+    <table style="width:100%;">
+        <tr>
+            <td>课程名:</td>
+            <td>
+                <input id="c_nameTxt" class="easyui-textbox" data-options="required:true" style="width:200px;">
+            </td>
+            <td>难度:</td>
+            <td><select id="c_rating" class="easyui-combobox" data-options="editable:false" style="width:50px;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td>介绍:</td>
+            <td>
+                <input id="c_introTxt" class="easyui-textbox" data-options="required:true, multiline:true"
+                       style="width:200px;height:200px;">
+            </td>
+            <td colspan="2">
+                <div>
+                    <img id="c_avatarImg" src="../res/img/avatar.png" onerror="this.src='../res/img/avatar.png'"
+                         style="width:128px;height:128px;">
+                </div>
+                <input id="c_avatarFileUpload" name="c_avatarFileUpload" type="file" onchange="uploadAvatar('c_avatarFileUpload', 'c_avatarImg')" title="选择文件"
+                       accept="image/*" style="display:none">
+                <div style="width:128px; vertical-align: middle;text-align: center;">
+                    <label class="cus_button" for="c_avatarFileUpload">请点击上传头像图片</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><input id="c_idTxt" type="text" style="display:none"></td>
+            <td style="float:right;margin-right:5px;">
+                <div id="addCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                     onclick="addCourse()">增加课程
+                </div>
+                <div id="updateCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                     onclick="updateCourse()">修改课程信息
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

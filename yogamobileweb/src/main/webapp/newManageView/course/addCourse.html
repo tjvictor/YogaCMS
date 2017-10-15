@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../../res/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../res/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../../res/css/webPublic.css">
+    <script type="text/javascript" src="../../res/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../../res/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../res/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../res/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../res/js/webCommon.js"></script>
+    <script type="text/javascript" src="../../res/js/webOperation.js"></script>
+    <script>
+        function try1(){
+            var a="";
+            for(var i = 0 ; i < $('#test').next().find('.textbox-value').length; i++)
+                a += $('#test').next().find('.textbox-value')[i].value + ' , ';
+
+
+            alert(a);
+
+        }
+
+        function ggg(){
+            var newValue = $('#tagTextT').val();
+            addValueToTagbox('test', newValue);
+        }
+
+        function tabBoxAddValue(){
+            var tagBoxObj = $('#test');
+            var newValueList=[];
+            for(var i = 0 ; i < tagBoxObj.next().find('.textbox-value').length; i++)
+                newValueList.push($('#test').next().find('.textbox-value')[i].value);
+            newValueList.push($('#tagTextT').val());
+
+            tagBoxObj.tagbox({
+                value: newValueList
+            });
+        }
+    </script>
+</head>
+<body>
+<div>
+        <input class="easyui-tagbox" id="test" value="" label="Add a tag" style="width:200px;" data-options="
+                tagFormatter: function(value, row){
+                    return '[' + value + ']';
+                }
+                ">
+</div>
+<div>
+    <input type="button" value="tryyyyyyyyyyy" onclick="try1()">
+<div>
+    <input id="tagTextT" type="text">
+    <input type="button" value="set tryyyyyyyyyyy" onclick="ggg()">
+</div>
+    <div>
+        <input type="button" value="init tagbox" onclick="tabBoxAddValue()">
+    </div>
+</div>
+</body>
+</html>

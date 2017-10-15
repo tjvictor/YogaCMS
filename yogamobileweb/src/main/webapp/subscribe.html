@@ -1,0 +1,15 @@
+<!--subscribe tab-->
+<script>
+    $(document).ready(function(){subTabClick($('#todaySpan'), '#subTabDiv span', 'dateindex=0')});
+</script>
+<div id="subTabDiv" style="width:100%;text-align:center;">
+    <span id="todaySpan" style="width:50%;float:left;color:green"
+          onclick="subTabClick(this, '#subTabDiv span', 'dateindex=0')">今日课程</span>
+    <span id="tmrSpan" style="width:50%;float:left;" onclick="subTabClick(this, '#subTabDiv span', 'dateindex=1')">明日课程</span>
+</div>
+<div style="clear:both"></div>
+<div style="width:100%;margin:0.02rem 0 0.02rem 0; height:0.02rem; background:black;padding:0rem"></div>
+<!--course list-->
+<div id="subContent" style="width:100%">
+
+</div>
