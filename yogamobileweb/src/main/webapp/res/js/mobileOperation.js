@@ -14,10 +14,18 @@ function subTabClick(child,  parentId, ajaxParam){
     changeColor(child, parentId);
 }
 
-function subClick(){
-    callAjax('/insertMember', '', '', '', '', 'memberName=灵魂守卫123', '.window-mask');
-    //callAjax('/getMemberById', '', '', '', '', 'memberId=11d7a2d8-64e3-4c10-b3b5-c5d30105', '.window-mask');
-    $('#globalReminder').show(0, function(){$('#globalReminder').delay(1000).fadeOut(500);})
+function subClick(scheduleId, memberId){
+    var param = "scheduleId="+scheduleId+"&memberId="+memberId;
+    callAjax('/insertSubSchedule', '', '', '', '', param, '.window-mask');
+
+    //$('#globalReminder').show(0, function(){$('#globalReminder').delay(1000).fadeOut(500);})
+}
+
+function unSubClick(scheduleId, memberId){
+    var param = "scheduleId="+scheduleId+"&memberId="+memberId;
+    callAjax('/deleteSubSchedule', '', '', '', '', param, '.window-mask');
+
+    //$('#globalReminder').show(0, function(){$('#globalReminder').delay(1000).fadeOut(500);})
 }
 
 function showCourse(data){
@@ -29,17 +37,26 @@ function showCourse(data){
             for(var ratingCount=0; ratingCount<item.courseRating; ratingCount++ )
                 ratingHtml += '<img src="res/img/full_rating.png" style="max-width:100%;height:0.4rem;padding:0">';
 
+            var courseTitle = item.courseName;
+            var subButtonStr = "预约";
+            var subButtonCmd = "subClick('"+item.scheduleId+"','"+item.memberId+"')"
+            if(item.memberId){
+                courseTitle += "(已预约)";
+                subButtonStr = "取消";
+                subButtonCmd = "unSubClick('"+item.scheduleId+"','"+item.memberId+"')"
+            }
+
             var courseTemp =
             '<div style="width:100%">'+
                 '<div style="width:20%;float:left;vertical-align: middle;text-align: center;">'+
                     '<img src="'+item.courseAvatar+'" style="max-width:100%">'+
                 '</div>'+
                 '<div style="width:80%;float:left">'+
-                    '<div>'+item.courseName+'</div>'+
+                    '<div>'+courseTitle+'</div>'+
                     '<div style="float:left;vertical-align: middle;text-align: center;">'+
                         ratingHtml+
                     '</div>'+
-                    '<div style="width:1rem;vertical-align: middle;text-align: center;float:right;background:green;color:white;border-radius:0.5rem" onclick="subClick()">预约</div>'+
+                    '<div style="width:1rem;vertical-align: middle;text-align: center;float:right;background:green;color:white;border-radius:0.5rem" onclick="'+subButtonCmd+'">'+subButtonStr+'</div>'+
                     '<div style="clear:both;padding:0"></div>'+
                     '<div>教练: '+item.teacherName+'</div>'+
                     '<div>地点: '+item.location+'</div>'+

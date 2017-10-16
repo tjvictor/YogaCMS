@@ -1,13 +1,17 @@
 package yoga.dao.Imp;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import yoga.dao.ScheduleDao;
 import yoga.dao.SubScheduleDao;
 import yoga.model.Schedule;
 import yoga.model.SubSchedule;
 
-import java.sql.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,10 +109,11 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
                         }
                     }
 
-                selectSql = "select count(0) from SubSchedule where scheduleId = '%s' and memberId = '%s'";
+                selectSql = "select id from SubSchedule where scheduleId = '%s' and memberId = '%s'";
                 for(SubSchedule subScheduleItem : subSchedules)
                     try (ResultSet rs = stmt.executeQuery(String.format(selectSql, subScheduleItem.getScheduleId(), userId))) {
                         if (rs.next()) {
+                            subScheduleItem.setId(rs.getString(1));
                             subScheduleItem.setMemberId(userId);
                         }
                     }
@@ -120,7 +125,10 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
 
     @Override
     public void insertSubSchedule(SubSchedule subSchedule) throws SQLException {
+        String insertSql = String.format("insert into SubSchedule values('%s','%s','%s');",
+                subSchedule.getId(), subSchedule.getScheduleId(), subSchedule.getMemberId());
 
+        insert(insertSql);
     }
 
     @Override
@@ -129,8 +137,9 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
     }
 
     @Override
-    public void deleteSubSchedule(String id) throws SQLException {
-        String deleteSql = String.format("delete from SubSchedule where id = '%s'", id);
+    public void deleteSubSchedule(SubSchedule subSchedule) throws SQLException {
+        String deleteSql = String.format("delete from SubSchedule where ScheduleId = '%s' and MemberId = '%s';",
+                subSchedule.getScheduleId(), subSchedule.getMemberId());
         delete(deleteSql);
     }
 }
