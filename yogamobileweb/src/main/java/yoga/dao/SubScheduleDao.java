@@ -18,4 +18,6 @@ public interface SubScheduleDao {
     void updateSubSchedule(SubSchedule subSchedule) throws SQLException;
 
     void deleteSubSchedule(SubSchedule subSchedule) throws SQLException;
+
+    void deleteSubSchedule(String id) throws SQLException;
 }

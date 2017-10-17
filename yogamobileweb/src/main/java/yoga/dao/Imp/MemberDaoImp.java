@@ -1,14 +1,18 @@
 package yoga.dao.Imp;
 
+import yoga.dao.MemberDao;
+import yoga.model.Member;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import yoga.dao.MemberDao;
-import yoga.model.Member;
-import yoga.model.Teacher;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +22,9 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
 
     @Override
     public void insertMember(Member member) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = "insert into Member values(?,?,?,?,?,?,?,?,?,?)";
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 ps.setString(1, member.getId());
                 ps.setString(2, member.getName());
                 ps.setString(3, member.getSex());
@@ -39,9 +43,9 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
 
     @Override
     public void updateMember(Member member) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = "update Member set Name=?, Sex=?, Tel=?, Password=?, JoinDate=?, ExpireDate=?, Fee=?, Remark=? where id = ?";
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 ps.setString(1, member.getName());
                 ps.setString(2, member.getSex());
                 ps.setString(3, member.getTel());
@@ -62,9 +66,9 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
         String selectSql = String.format("select count(0) from Member where id = '%s'", id);
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
-                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
                     if (rs.next())
-                        if(rs.getInt(1) > 0)
+                        if (rs.getInt(1) > 0)
                             return true;
                     return false;
                 }
@@ -77,9 +81,9 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
         String selectSql = String.format("select count(0) from Member where tel = '%s'", tel);
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
-                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
                     if (rs.next())
-                        if(rs.getInt(1) > 0)
+                        if (rs.getInt(1) > 0)
                             return true;
                     return false;
                 }
@@ -92,9 +96,9 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
         String selectSql = String.format("select count(0) from Member where tel = '%s' and id != '%s'", tel, id);
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
-                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
                     if (rs.next())
-                        if(rs.getInt(1) > 0)
+                        if (rs.getInt(1) > 0)
                             return true;
                     return false;
                 }
@@ -113,7 +117,7 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
-                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
                     while (rs.next()) {
                         Member item = new Member();
                         item.setId(rs.getString(1));
@@ -138,6 +142,45 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
     public void deleteMember(String id) throws SQLException {
         String deleteSql = String.format("update Member set IsDel=1 where id = '%s'", id);
         delete(deleteSql);
+    }
+
+    @Override
+    public String authenciateUser(String tel, String password) throws SQLException {
+        String selectSql = String.format("select Id from Member where Tel = '%s' and Password = '%s';", tel, password);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next())
+                        return rs.getString(1);
+                    return "";
+                }
+            }
+        }
+    }
+
+    @Override
+    public Member getMemberById(String id) throws SQLException {
+        String selectSql = String.format("select * from Member where id = '%s';", id);
+        Member item = new Member();
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        item.setId(rs.getString(1));
+                        item.setName(rs.getString(2));
+                        item.setSex(rs.getString(3));
+                        item.setTel(rs.getString(4));
+                        item.setPassword(rs.getString(5));
+                        item.setJoinDate(rs.getString(6));
+                        item.setExpireDate(rs.getString(7));
+                        item.setFee(rs.getInt(8));
+                        item.setRemark(escapeString(rs.getString(9)));
+                    }
+                }
+            }
+        }
+        return item;
     }
 
 

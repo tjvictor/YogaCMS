@@ -20,4 +20,8 @@ public interface MemberDao {
     List<Member> getMembers(String name, String tel) throws SQLException;
 
     void deleteMember(String id) throws SQLException;
+
+    String authenciateUser(String tel, String password) throws SQLException;
+
+    Member getMemberById(String id) throws SQLException;
 }

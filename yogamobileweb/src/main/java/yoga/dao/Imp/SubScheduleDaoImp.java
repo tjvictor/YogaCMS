@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -125,8 +127,9 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
 
     @Override
     public void insertSubSchedule(SubSchedule subSchedule) throws SQLException {
-        String insertSql = String.format("insert into SubSchedule values('%s','%s','%s');",
-                subSchedule.getId(), subSchedule.getScheduleId(), subSchedule.getMemberId());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String insertSql = String.format("insert into SubSchedule values('%s','%s','%s', '%s');",
+                subSchedule.getId(), subSchedule.getScheduleId(), subSchedule.getMemberId(), df.format(new Date()));
 
         insert(insertSql);
     }
@@ -140,6 +143,12 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
     public void deleteSubSchedule(SubSchedule subSchedule) throws SQLException {
         String deleteSql = String.format("delete from SubSchedule where ScheduleId = '%s' and MemberId = '%s';",
                 subSchedule.getScheduleId(), subSchedule.getMemberId());
+        delete(deleteSql);
+    }
+
+    @Override
+    public void deleteSubSchedule(String id) throws SQLException {
+        String deleteSql = String.format("delete from SubSchedule where id = '%s';", id);
         delete(deleteSql);
     }
 }

@@ -1,0 +1,33 @@
+<script>
+    $(function(){
+        getMemberInfo();
+    });
+</script>
+<div>
+    <div>
+        <span>欢迎会员:</span>
+        <span style="margin-left:0.5rem" id="mi_userName"></span>
+        <span style="margin-left:0.5rem" id="mi_userSex"></span>
+    </div>
+    <div>
+        <span>电话:</span>
+        <span style="margin-left:0.5rem" id="mi_userTel"></span>
+    </div>
+    <div>
+        <span>会员有效期:</span>
+        <span style="margin-left:0.5rem" id="mi_userAvailableDate"></span>
+    </div>
+    <div>
+        <label for="mi_userNewPwd">新密码:</label>
+        <input type="password" id="mi_userNewPwd" style="border-radius:0.1rem;">
+    </div>
+    <div>
+        <label for="mi_userConfirmNewPwd">确认新密码:</label>
+        <input type="password" id="mi_userConfirmNewPwd" style="border-radius:0.1rem;">
+    </div>
+    <div>
+        <input type="button" value="注销登录" onclick="logout()" style="border-radius:0.1rem;">
+        <input type="button" value="修改密码" onclick="changePwd()" style="border-radius:0.1rem;">
+    </div>
+    <div style="clear:both"></div>
+</div>
