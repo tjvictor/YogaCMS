@@ -12,7 +12,7 @@ public interface NotificationDao {
 
     Notification getNotificationById(String id) throws SQLException;
 
-    List<Notification> getTopNotificationBriefs(String topCount) throws SQLException;
+    List<Notification> getTopNotificationBriefs(int topCount) throws SQLException;
 
     void insertNotification(Notification item) throws SQLException;
 

@@ -1,10 +1,9 @@
 package yoga.model;
 
-
 public class Notification {
     private String id;
     private String title;
-    private String Content;
+    private String content;
     private String date;
 
     public String getId() {
@@ -24,11 +23,11 @@ public class Notification {
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public void setContent(String content) {
-        Content = content;
+        this.content = content;
     }
 
     public String getDate() {

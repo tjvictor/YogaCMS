@@ -63,7 +63,7 @@ public class NotificationDaoImp extends BaseDao implements NotificationDao{
     }
 
     @Override
-    public List<Notification> getTopNotificationBriefs(String topCount) throws SQLException {
+    public List<Notification> getTopNotificationBriefs(int topCount) throws SQLException {
         List<Notification> items = new ArrayList<Notification>();
         String selectSql = String.format("select * from Notification order by Date desc limit %s;", topCount);
 

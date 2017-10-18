@@ -840,3 +840,129 @@ function updateSubScheduleCallback(data){
         }
 }
 /*subSchedule region*/
+
+/*notification region*/
+function notificationSearch(){
+
+    callAjax('/websiteService/getNotifications', '', 'notificationSearchCallback', '', '', '', '.window-mask')
+}
+
+function notificationSearchCallback(data) {
+    $.messager.show({
+        title: '操作提示',
+        msg: data.prompt,
+        timeout: 5000,
+    });
+    if (data.status == "ok") {
+        if (data.callBackData) $('#notificationView').datagrid('loadData', data.callBackData);
+    }
+}
+
+function clearNotification(){
+        $('#n_idTxt').val('');
+        $('#n_title').textbox('setValue', '');
+        $('#n_content').textbox('setValue', '');
+        $('#addNotificationBtn').css('display','block');
+        $('#updateNotificationBtn').css('display','block');
+}
+
+function openNotificationPanel(mode){
+    clearNotification();
+    if(mode == "add"){
+        $('#notificationUpdateView').dialog('open');
+        $('#updateNotificationBtn').css('display','none');
+    }
+    else if(mode == 'edit'){
+        var row = $('#notificationView').datagrid('getSelected');
+        if(row){
+            $('#notificationUpdateView').dialog('open');
+            $('#n_id').val(row.id);
+            $('#n_title').textbox('setValue', row.title);
+            $('#n_content').textbox('setValue', row.content);
+            $('#n_date').textbox('setValue', row.date);
+            $('#addNotificationBtn').css('display','none');
+        }
+    }
+}
+
+function addNotification() {
+
+    var title = $('#n_title').textbox('getValue');
+    var content = $('#n_content').textbox('getValue');
+
+    var postValue = {
+        "title": title,
+        "content": content,
+    };
+
+    callAjax('/websiteService/insertNotification', '', 'addNotificationCallback', '', 'POST', postValue, '.window-mask');
+
+}
+
+function addNotificationCallback(data){
+    $.messager.show({
+            title: '操作提示',
+            msg: data.prompt,
+            timeout: 5000,
+        });
+        if(data.status == "ok"){
+            $('#notificationView').datagrid('insertRow', {index : 0, row : data.callBackData});
+            $('#notificationUpdateView').dialog('close');
+        }
+}
+
+function updateNotification() {
+
+    var id = $('#n_idTxt').val();
+    var title = $('#n_title').textbox('getValue');
+    var content = $('#n_content').textbox('getValue');
+    var date = $('#n_date').textbox('getValue');
+
+    var postValue = {
+        "id" : id,
+        "title": title,
+        "content": content,
+        "date" : date,
+        };
+
+    callAjax('/websiteService/updateNotification', '', 'updateNotificationCallback', '', 'POST', postValue, '.window-mask');
+}
+
+function updateNotificationCallback(data){
+    $.messager.show({
+            title: '操作提示',
+            msg: data.prompt,
+            timeout: 5000,
+        });
+        if(data.status == "ok"){
+            var rowIndex = $('#notificationView').datagrid('getRowIndex', data.callBackData.id);
+            $('#notificationView').datagrid('updateRow', {index : rowIndex, row : data.callBackData});
+            $('#notificationUpdateView').dialog('close');
+        }
+}
+
+function deleteNotification(){
+    var row = $('#notificationView').datagrid('getSelected');
+    if(row){
+        $.messager.confirm('删除通知', '确认删除此通知吗?',
+            function(result) {
+                if (result) {
+                    callAjax('/websiteService/deleteNotification', '', 'notificationDeleteCallback', '', '', 'id='+row.id, '.window-mask');
+                }
+            }
+        );
+    }
+}
+
+function notificationDeleteCallback(data){
+    $.messager.show({
+        title: '操作提示',
+        msg: data.prompt,
+        timeout: 5000,
+    });
+    if(data.status == "ok"){
+        var rowIndex = $('#notificationView').datagrid('getRowIndex', data.callBackData);
+        $('#notificationView').datagrid('deleteRow', rowIndex);
+    }
+}
+/*notification region*/

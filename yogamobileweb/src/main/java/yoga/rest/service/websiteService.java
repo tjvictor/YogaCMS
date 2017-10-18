@@ -512,13 +512,15 @@ public class websiteService {
     }
 
     @RequestMapping(value = "/updateNotification", method = RequestMethod.POST)
-    public ResponseEntity updateNotification(@FormParam("id") String id, @FormParam("title") String title, @FormParam("content") String content) {
+    public ResponseEntity updateNotification(@FormParam("id") String id, @FormParam("title") String title,
+                                             @FormParam("content") String content, @FormParam("date") String date) {
 
         try {
             Notification item = new Notification();
             item.setId(id);
             item.setTitle(title);
             item.setContent(content);
+            item.setDate(date);
             notificationDaoImp.updateNotification(item);
             return new ResponseEntity("ok", "修改成功", item);
         } catch (SQLException e) {

@@ -135,7 +135,7 @@ public class mobileService {
     }
 
     @RequestMapping("/getNotificationBriefByCount")
-    public ResponseEntity getNotificationBriefByCount(@RequestParam(value="topCount") String topCount) {
+    public ResponseEntity getNotificationBriefByCount(@RequestParam(value="topCount") int topCount) {
 
         try {
             List<Notification> items = notificationDaoImp.getTopNotificationBriefs(topCount);

@@ -184,3 +184,38 @@ function changeMemberPwdCallback(){
         $('#globalReminder').show(0, function(){$('#globalReminder').delay(1000).fadeOut(500);})
     }
 }
+
+function getTop5Notification(){
+    callAjax('/mobileService/getNotificationBriefByCount', '', 'getTop5NotificationCallback', '', '', 'topCount=5', '');
+}
+
+function getTop5NotificationCallback(data){
+    $('#notificationView').html('');
+    if(data.status == "ok" && data.callBackData.length > 0){
+        var notificationTemp = '<ul style="background:rgb(255, 255, 255);border-radius:0.2rem">';
+        for(var i=0; i < data.callBackData.length ; i++){
+            var item = data.callBackData[i];
+            var li_temp = '<li>';
+            li_temp += '<a href="notification.html?id='+item.id+'" style="list-style:none;height:0.6rem;line-height:0.6rem;">';
+            li_temp += '<span style="float:left;">'+ item.title +'</span>';
+            li_temp += '<span style="float:right;">'+ item.date +'</span>';
+            li_temp += '</a>';
+            li_temp += '</li>';
+
+            notificationTemp += li_temp;
+        }
+
+        notificationTemp += '</ul>';
+        $('#notificationView').html(notificationTemp);
+    }
+}
+
+function getNotificationById(id){
+    callAjax('/mobileService/getNotificationById', '', 'getNotificationByIdCallback', '', '', id, '');
+}
+
+function getNotificationByIdCallback(data){
+    $('#n_page_title').html(data.callBackData.title);
+    $('#n_page_content').html(data.callBackData.content);
+
+}

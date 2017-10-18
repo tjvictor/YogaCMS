@@ -1,22 +1,25 @@
 <!--home function-->
+<script>
+        $(function () { getTop5Notification() });
+</script>
 <div style="width: 100%; margin: 0 auto;vertical-align: middle;text-align: center;background:rgb(255, 255, 255);border-radius:0.2rem; height:2.8rem">
-    <a style="width:25%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="#">
+    <a style="width:33%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="venueIntro.html">
         <div style="width:1.2rem;height:1.2rem;margin: 0 auto;">
             <img style="max-width:100%" src="res/img/chat.png"/></div>
         <p style="font-size:0.32rem;margin-top:0.2rem">场馆介绍</p>
     </a>
-    <a style="width:25%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="#">
+    <a style="width:33%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="teacherIntro.html">
         <div style="width:1.2rem;height:1.2rem;margin: 0 auto;"><img style="max-width:100%" src="res/img/teacher.png"/></div>
         <p style="font-size:0.32rem;margin-top:0.2rem">教师风彩</p>
     </a>
-    <a style="width:25%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="#">
+    <a style="width:33%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="yogaIntro.html">
         <div style="width:1.2rem;height:1.2rem;margin: 0 auto;"><img style="max-width:100%" src="res/img/knowledge.png"/></div>
-        <p style="font-size:0.32rem;margin-top:0.2rem">瑜珈知识</p>
+        <p style="font-size:0.32rem;margin-top:0.2rem">特色课程</p>
     </a>
-    <a style="width:25%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="#">
+<!--    <a style="width:25%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" href="#">
         <div style="width:1.2rem;height:1.2rem;margin: 0 auto;"><img style="max-width:100%" src="res/img/info.png"/></div>
         <p style="font-size:0.32rem;margin-top:0.2rem">个人信息</p>
-    </a>
+    </a>-->
 </div>
 <!--home notification-->
 <div style="margin-top:0.2rem;height:100%">
@@ -25,18 +28,20 @@
         <span style="float:right"><a href="#">...</a></span>
     </div>
     <div style="clear:both"></div>
-    <ul style="background:rgb(255, 255, 255);border-radius:0.2rem">
-        <li>
-            <a href="notification.html" style="height:0.6rem;line-height:0.6rem;">
-                <span style="float:left;">第一次开发</span>
-                <span style="float:right;">2017-9-30</span>
-            </a>
-        </li>
-        <li>
-            <a href="notification.html" style="height:0.6rem;line-height:0.6rem;">
-                <span style="float:left;">上线啦</span>
-                <span style="float:right;">2017-9-30</span>
-            </a>
-        </li>
-    </ul>
+    <div id="notificationView">
+        <ul style="background:rgb(255, 255, 255);border-radius:0.2rem">
+            <li>
+                <a href="notification.html" style="height:0.6rem;line-height:0.6rem;">
+                    <span style="float:left;">第一次开发</span>
+                    <span style="float:right;">2017-9-30</span>
+                </a>
+            </li>
+            <li>
+                <a href="notification.html" style="height:0.6rem;line-height:0.6rem;">
+                    <span style="float:left;">上线啦</span>
+                    <span style="float:right;">2017-9-30</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
