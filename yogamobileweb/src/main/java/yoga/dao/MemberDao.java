@@ -24,4 +24,6 @@ public interface MemberDao {
     String authenciateUser(String tel, String password) throws SQLException;
 
     Member getMemberById(String id) throws SQLException;
+
+    void changeMemberPwd(String id, String pwd);
 }

@@ -183,5 +183,10 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
         return item;
     }
 
+    @Override
+    public void changeMemberPwd(String id, String pwd) {
+        String selectSql = String.format("update Member set Password = '%s' where id = '%s';", pwd, id);
+    }
+
 
 }

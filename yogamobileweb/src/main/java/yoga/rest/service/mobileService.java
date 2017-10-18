@@ -1,8 +1,10 @@
 package yoga.rest.service;
 
 import yoga.dao.MemberDao;
+import yoga.dao.NotificationDao;
 import yoga.dao.SubScheduleDao;
 import yoga.model.Member;
+import yoga.model.Notification;
 import yoga.model.SubSchedule;
 import yoga.rest.model.ResponseEntity;
 
@@ -32,11 +34,14 @@ public class mobileService {
     @Autowired
     private SubScheduleDao subScheduleDaoImp;
 
+    @Autowired
+    private NotificationDao notificationDaoImp;
+
     @RequestMapping("/getCourseList")
     public ResponseEntity getCourseList(@RequestParam(value="dateindex") int dateindex, @RequestParam(value="userId") String userId) {
 
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String realDateStr = df.format(DateUtils.addDays(date, dateindex));
 
         try {
@@ -116,4 +121,41 @@ public class mobileService {
             return new ResponseEntity("error", "系统错误，请联系系统管理员");
         }
     }
+
+    @RequestMapping("/changeMemberPwd")
+    public ResponseEntity changeMemberPwd(@RequestParam(value="userId") String id, @RequestParam(value="pwd") String pwd) {
+
+        try {
+            memberDaoImp.changeMemberPwd(id, pwd);
+            return new ResponseEntity("ok", "修改成功", id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping("/getNotificationBriefByCount")
+    public ResponseEntity getNotificationBriefByCount(@RequestParam(value="topCount") String topCount) {
+
+        try {
+            List<Notification> items = notificationDaoImp.getTopNotificationBriefs(topCount);
+            return new ResponseEntity("ok", "查询成功", items);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping("/getNotificationById")
+    public ResponseEntity getNotificationById(@RequestParam(value="id") String id) {
+
+        try {
+            Notification item = notificationDaoImp.getNotificationById(id);
+            return new ResponseEntity("ok", "查询成功", item);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
 }

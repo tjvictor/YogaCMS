@@ -1,15 +1,31 @@
 package yoga.rest.service;
 
+import yoga.dao.CourseDao;
+import yoga.dao.MemberDao;
+import yoga.dao.NotificationDao;
+import yoga.dao.ScheduleDao;
+import yoga.dao.SubScheduleDao;
+import yoga.dao.TeacherDao;
+import yoga.model.Course;
+import yoga.model.Member;
+import yoga.model.Notification;
+import yoga.model.Schedule;
+import yoga.model.SubSchedule;
+import yoga.model.Teacher;
+import yoga.rest.model.ResponseEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
-import yoga.dao.*;
-import yoga.model.*;
-import yoga.rest.model.ResponseEntity;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
@@ -18,8 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +61,9 @@ public class websiteService {
 
     @Autowired
     private SubScheduleDao subScheduleDaoImp;
+
+    @Autowired
+    private NotificationDao notificationDaoImp;
 
     @RequestMapping(value = "/insertMember", method = RequestMethod.POST)
     public ResponseEntity insertMember(@FormParam("name") String name, @FormParam("sex") String sex, @FormParam("tel") String tel,
@@ -457,6 +474,64 @@ public class websiteService {
 
         try {
             subScheduleDaoImp.deleteSubSchedule(id);
+            return new ResponseEntity("ok", "删除成功", id);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getNotifications", method = RequestMethod.GET)
+    public ResponseEntity getNotifications() {
+
+        try {
+            List<Notification> items = notificationDaoImp.getNotifications();
+            return new ResponseEntity("ok", "查询成功", items);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/insertNotification", method = RequestMethod.POST)
+    public ResponseEntity insertNotification(@FormParam("title") String title, @FormParam("content") String content) {
+
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Notification item = new Notification();
+            item.setId(UUID.randomUUID().toString());
+            item.setTitle(title);
+            item.setContent(content);
+            item.setDate(df.format(new Date()));
+            notificationDaoImp.insertNotification(item);
+            return new ResponseEntity("ok", "插入成功", item);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateNotification", method = RequestMethod.POST)
+    public ResponseEntity updateNotification(@FormParam("id") String id, @FormParam("title") String title, @FormParam("content") String content) {
+
+        try {
+            Notification item = new Notification();
+            item.setId(id);
+            item.setTitle(title);
+            item.setContent(content);
+            notificationDaoImp.updateNotification(item);
+            return new ResponseEntity("ok", "修改成功", item);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/deleteNotification", method = RequestMethod.GET)
+    public ResponseEntity deleteNotification(@RequestParam("id") String id) {
+
+        try {
+            notificationDaoImp.deleteNotification(id);
             return new ResponseEntity("ok", "删除成功", id);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

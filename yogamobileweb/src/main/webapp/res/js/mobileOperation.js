@@ -138,13 +138,13 @@ function getMemberInfoCallback(data){
         $('#globalError').show(0, function(){$('#globalError').delay(1000).fadeOut(500);})
     }else{
         var memberInfo = data.callBackData;
-        $('#mi_userName').text(memberInfo.name);
+
         if(memberInfo.sex == '女')
-            $('#mi_userSex').text("女士");
+            $('#mi_userName').text(memberInfo.name+" 女士");
         else
-            $('#mi_userSex').text("先生");
+            $('#mi_userName').text(memberInfo.name+" 先生");
         $('#mi_userTel').text(memberInfo.tel)
-        $('#mi_userAvailableDate').text(memberInfo.joinDate + " --- " + memberInfo.expireDate);
+        $('#mi_userAvailableDate').text("注册: "+memberInfo.joinDate + " 截止: " + memberInfo.expireDate);
 
 
     }
@@ -153,4 +153,34 @@ function getMemberInfoCallback(data){
 function logout(){
     Cookies.remove("userId");
     $(mainContent).load("home.html");
+}
+
+function changePwd(){
+    var newPwd = $('#mi_userNewPwd').val();
+    var newConPwd = $('#mi_userConfirmNewPwd').val();
+    if(newPwd == ''){
+        $('#globalError p').text('新密码不能为空');
+        $('#globalError').show(0, function(){$('#globalError').delay(1000).fadeOut(500);})
+        return;
+    }
+    if(newPwd != newConPwd){
+        $('#globalError p').text('两次输入密码不一致');
+        $('#globalError').show(0, function(){$('#globalError').delay(1000).fadeOut(500);})
+        return;
+    }
+
+    var userId = checkUserCookie();
+    if(userId){
+        callAjax('/mobileService/changeMemberPwd', '', 'changeMemberPwdCallback', '', '', 'id='+userId+'&newPwd='+newPwd, '.window-mask');
+    }
+}
+
+function changeMemberPwdCallback(){
+    if(data.status == "error"){
+        $('#globalError p').text(data.prompt);
+        $('#globalError').show(0, function(){$('#globalError').delay(1000).fadeOut(500);})
+    } else {
+        $('#globalReminder p').text(data.prompt);
+        $('#globalReminder').show(0, function(){$('#globalReminder').delay(1000).fadeOut(500);})
+    }
 }
