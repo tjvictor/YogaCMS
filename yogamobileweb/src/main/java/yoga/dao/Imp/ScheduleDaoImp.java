@@ -1,12 +1,16 @@
 package yoga.dao.Imp;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import yoga.dao.ScheduleDao;
 import yoga.model.Schedule;
 
-
-import java.sql.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,7 +129,21 @@ public class ScheduleDaoImp extends BaseDao implements ScheduleDao {
 
     @Override
     public void updateSchedule(Schedule schedule) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            String insertSql = "update Schedule set TeacherId=?, CourseId=?, StartTime=?, EndTime=?, Capacity=?, Location=? where id=?";
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
 
+                ps.setString(1, schedule.getTeacherId());
+                ps.setString(2, schedule.getCourseId());
+                ps.setString(3, schedule.getStartDateTime());
+                ps.setString(4, schedule.getEndDateTime());
+                ps.setInt(5, schedule.getCapacity());
+                ps.setString(6, schedule.getStatus());
+                ps.setString(7, schedule.getLocation());
+                ps.setString(8, schedule.getId());
+                ps.executeUpdate();
+            }
+        }
     }
 
     @Override

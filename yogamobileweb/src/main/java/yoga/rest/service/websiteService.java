@@ -365,26 +365,19 @@ public class websiteService {
                                          @FormParam("endTime") String endTime, @FormParam("status") String status) {
 
 
-        List<Schedule> scheduleList = new ArrayList<Schedule>();
-        String[] dates = dateList.split(",");
-        for (String dateItem : dates) {
             Schedule scheduleItem = new Schedule();
-            scheduleItem.setId(UUID.randomUUID().toString());
+            scheduleItem.setId(id);
             scheduleItem.setTeacherId(teacherId);
             scheduleItem.setCourseId(courseId);
             scheduleItem.setLocation(location);
             scheduleItem.setCapacity(capacity);
             scheduleItem.setStatus(status);
-            scheduleItem.setStartDateTime(String.format("%s %s", dateItem, startTime));
-            scheduleItem.setEndDateTime(String.format("%s %s", dateItem, endTime));
-            scheduleList.add(scheduleItem);
-        }
+            scheduleItem.setStartDateTime(String.format("%s %s", dateList, startTime));
+            scheduleItem.setEndDateTime(String.format("%s %s", dateList, endTime));
 
         try {
-            scheduleDaoImp.physicalDeleteSchedule(id);
-            for (Schedule item : scheduleList)
-                scheduleDaoImp.insertSchedule(item);
-            return new ResponseEntity("ok", "修改成功, 请刷新查看", id);
+                scheduleDaoImp.updateSchedule(scheduleItem);
+            return new ResponseEntity("ok", "修改成功", scheduleItem);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");

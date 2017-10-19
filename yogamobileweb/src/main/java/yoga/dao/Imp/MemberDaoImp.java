@@ -145,15 +145,20 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
     }
 
     @Override
-    public String authenciateUser(String tel, String password) throws SQLException {
-        String selectSql = String.format("select Id from Member where Tel = '%s' and Password = '%s';", tel, password);
+    public Member authenciateUser(String tel, String password) throws SQLException {
+        String selectSql = String.format("select Id, ExpireDate from Member where Tel = '%s' and Password = '%s';", tel, password);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
                 try (ResultSet rs = stmt.executeQuery(selectSql)) {
-                    if (rs.next())
-                        return rs.getString(1);
-                    return "";
+                    if (rs.next()){
+                        Member member = new Member();
+                        member.setId(rs.getString(1));
+                        member.setExpireDate(rs.getString(2));
+                        return member;
+                    }
+
+                    return null;
                 }
             }
         }

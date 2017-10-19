@@ -106,7 +106,7 @@ function loginCallback(data){
         $('#globalError p').text(data.prompt);
         $('#globalError').show(0, function(){$('#globalError').delay(1000).fadeOut(500);})
     } else{
-        Cookies.set("userId", data.callBackData);
+        Cookies.set("userId", data.callBackData, { expires: 1 });
         $(mainContent).load("home.html");
     }
 

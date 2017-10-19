@@ -21,7 +21,7 @@ public interface MemberDao {
 
     void deleteMember(String id) throws SQLException;
 
-    String authenciateUser(String tel, String password) throws SQLException;
+    Member authenciateUser(String tel, String password) throws SQLException;
 
     Member getMemberById(String id) throws SQLException;
 

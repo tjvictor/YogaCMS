@@ -86,7 +86,7 @@
             <td>容纳人数:</td>
             <td><input id="s_capcityTxt" class="easyui-textbox" data-options="required:true" style="width:50px;"></td>
         </tr>
-        <tr>
+        <tr id="s_viewMode">
             <td >课程日期:<br/>(可多选)</td>
             <td colspan="3">
                 <div style="float:left;">
@@ -94,6 +94,17 @@
                 </div>
                 <div style="float:left;margin-left:5px;">
                     <input class="easyui-tagbox" id="s_calendarbox" style="width:100px;">
+                </div>
+            </td>
+        </tr>
+        <tr id="s_editMode">
+            <td >课程日期:<br/>(单选)</td>
+            <td colspan="3">
+                <div style="float:left;">
+                    <div id="s_calendar_edit" class="easyui-calendar" data-options="onSelect:scheduleCalendarOnSingleSelect" style="width:180px;height:180px;"></div>
+                </div>
+                <div style="float:left;margin-left:5px;">
+                    <input class="easyui-tagbox" id="s_calendarbox_edit" style="width:100px;">
                 </div>
             </td>
         </tr>

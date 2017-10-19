@@ -1,3 +1,9 @@
+/*Common Parameter*/
+var notificationKindeditor;
+var teacherKindeditor;
+/*Common Parameter*/
+
+
 /*member region*/
 function memberSearch(){
     var name = "name="+$('#nameViewTxt').val();
@@ -204,6 +210,19 @@ function uploadAvatar(fileElementId, imgId) {
 
 function openTeacherPanel(mode){
     clearTeacher();
+    if(!teacherKindeditor){
+    teacherKindeditor = KindEditor.create('#editor_id1',{
+            items: [
+                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'quickformat', 'selectall', '|', '/',
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+                    'table', 'hr', 'emoticons', 'pagebreak',
+                    'anchor', 'link', 'unlink'],}
+        );
+    }
     if(mode == "add"){
         $('#teacherUpdateView').dialog('open');
         $('#updateTeacherBtn').css('display','none');
@@ -480,6 +499,8 @@ function clearSchedule(){
     $('#s_calendarbox').tagbox({value: dateString});
     $('#addScheduleBtn').css('display','block');
     $('#updateScheduleBtn').css('display','block');
+    $('#s_viewMode').css('display','');
+    $('#s_editMode').css('display','');
 }
 
 function openSchedulePanel(mode){
@@ -487,6 +508,7 @@ function openSchedulePanel(mode){
     if(mode == "add"){
         $('#scheduleUpdateView').dialog('open');
         $('#updateScheduleBtn').css('display','none');
+        $('#s_editMode').css('display','none');
     }
     else if(mode == 'edit'){
         var row = $('#scheduleView').datagrid('getSelected');
@@ -498,8 +520,8 @@ function openSchedulePanel(mode){
             $('#s_courseSelect').combobox('select', row.courseId);
             $('#s_locationSelect').combobox('select', row.location);
             $('#s_capacityTxt').textbox('setValue', row.capcity);
-            $('#s_calendar').calendar({'current': new Date(Date.parse(row.date.replace(/-/g,"/")))});
-            $('#s_calendarbox').tagbox({value: row.date});
+            $('#s_calendar_edit').calendar({'current': new Date(Date.parse(row.date.replace(/-/g,"/")))});
+            $('#s_calendarbox_edit').tagbox({value: row.date});
             $('#s_startTimeHourSelect').combobox('select', row.startTime.split(":")[0])
             $('#s_startTimeMinuteSelect').combobox('select', row.startTime.split(":")[1]);
             $('#s_endTimeHourSelect').combobox('select', row.endTime.split(":")[0])
@@ -507,6 +529,7 @@ function openSchedulePanel(mode){
             $('#s_status').combobox('select', row.status);
 
             $('#addScheduleBtn').css('display','none');
+            $('#s_viewMode').css('display','none');
         }
     }
 }
@@ -541,7 +564,7 @@ function updateSchedule(){
     var courseId = $('#s_courseSelect').combobox('getValue');
     var location = $('#s_locationSelect').combobox('getValue');
 	var capacity = $('#s_capcityTxt').textbox('getValue');
-	var dateList = getValuesFromTagbox('s_calendarbox').join(",");
+	var dateList = getValuesFromTagbox('s_calendarbox_edit').join(",");
 	var startTime = $('#s_startTimeHourSelect').combobox('getValue')+':'+$('#s_startTimeMinuteSelect').combobox('getValue');
 	var endTime = $('#s_endTimeHourSelect').combobox('getValue')+':'+$('#s_endTimeMinuteSelect').combobox('getValue');
 	var status = $('#s_status').combobox('getValue');
@@ -578,8 +601,8 @@ function updateScheduleCallback(data){
             timeout: 5000,
         });
         if(data.status == "ok"){
-            var rowIndex = $('#scheduleView').datagrid('getRowIndex', data.callBackData);
-            $('#scheduleView').datagrid('deleteRow', rowIndex);
+            var rowIndex = $('#scheduleView').datagrid('getRowIndex', data.callBackData.id);
+            $('#scheduleView').datagrid('updateRow', {index : rowIndex, row : data.callBackData});
             $('#scheduleUpdateView').dialog('close');
         }
 }
@@ -867,6 +890,20 @@ function clearNotification(){
 }
 
 function openNotificationPanel(mode){
+    if(!notificationKindeditor){
+        notificationKindeditor = KindEditor.create('#editor_id',{
+            items: [
+                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'quickformat', 'selectall', '|', '/',
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+                    'table', 'hr', 'emoticons', 'pagebreak',
+                    'anchor', 'link', 'unlink'
+                    ]}
+        );
+    }
     clearNotification();
     if(mode == "add"){
         $('#notificationUpdateView').dialog('open');

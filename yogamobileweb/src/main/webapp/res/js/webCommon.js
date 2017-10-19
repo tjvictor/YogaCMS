@@ -198,7 +198,12 @@ function imgFormatter(value,row,index){
 
 function scheduleCalendarOnSelect(date){
     var dateString = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-    addValueToTagbox('s_calendarbox', dateString);
+    appendValueToTagbox('s_calendarbox', dateString);
+}
+
+function scheduleCalendarOnSingleSelect(date){
+    var dateString = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    $('#s_calendarbox_edit').tagbox({value: dateString});
 }
 
 function getValuesFromTagbox(tagId){
@@ -210,7 +215,7 @@ function getValuesFromTagbox(tagId){
     return newValueList;
 }
 
-function addValueToTagbox(tagId, newValue) {
+function appendValueToTagbox(tagId, newValue) {
     var tagBoxObj = $('#'+tagId);
     if(newValue){
         var newValueList=getValuesFromTagbox(tagId);

@@ -5,10 +5,13 @@
     <title>瑜伽后台管理页面</title>
     <link rel="stylesheet" type="text/css" href="../res/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../res/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../res/kindeditor/themes/default/default.css">
     <link rel="stylesheet" type="text/css" href="../res/css/webPublic.css">
     <script type="text/javascript" src="../res/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="../res/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../res/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/lang/zh-CN.js"></script>
     <script type="text/javascript" src="../res/js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="../res/js/webCommon.js"></script>
     <script type="text/javascript" src="../res/js/webOperation.js"></script>
@@ -52,7 +55,6 @@
 
 
             <li class="ul_title">课程管理</li>
-            <!--<li class="li_item" onclick="insertPage('course/addCourse.html')">增加新课程</li>-->
             <li class="li_item" onclick="insertPage('course/searchCourse.html')">课程查询</li>
             <li class="li_item" onclick="insertPage('course/scheduleCourse.html')">课程安排</li>
             <li class="li_item" onclick="insertPage('course/subCourseSearch.html')">课程预约</li>
@@ -60,8 +62,7 @@
     </div>
 
     <div id="rightDiv" data-options="region:'center', href:''">
-        <input id="sub_startDateViewTxt1" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc3'"style="width:100px;">
-        <div id="cc3" class="easyui-calendar"></div>
+
     </div>
     <div id="bottomDiv" data-options="region:'south'" style="height:50px;vertical-align: middle;text-align: center;">
         <span>版权所有</span>

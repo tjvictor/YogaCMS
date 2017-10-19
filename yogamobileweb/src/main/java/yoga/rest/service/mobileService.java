@@ -8,7 +8,6 @@ import yoga.model.Notification;
 import yoga.model.SubSchedule;
 import yoga.rest.model.ResponseEntity;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,10 +87,15 @@ public class mobileService {
     public ResponseEntity mobileLogin(@RequestParam(value="tel") String tel, @RequestParam(value="pwd") String pwd) {
 
         try {
-            String memberId = memberDaoImp.authenciateUser(tel, pwd);
-            if(StringUtils.isNotEmpty(memberId))
-                return new ResponseEntity("ok", "登录成功", memberId);
-            return new ResponseEntity("error", "密码错误", memberId);
+            Member item = memberDaoImp.authenciateUser(tel, pwd);
+            if(item == null)
+                return new ResponseEntity("error", "密码错误", item.getId());
+
+            Date current = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            if(df.parse(item.getExpireDate()).getTime() <= current.getTime() )
+                return new ResponseEntity("error", "会员已过期", item.getId());
+            return new ResponseEntity("ok", "登录成功", item.getId());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");
