@@ -38,7 +38,7 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
                 ps.executeUpdate();
             }
         }
-        member.setRemark(escapeString(member.getRemark()));
+        member.setRemark(member.getRemark());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
                 ps.executeUpdate();
             }
         }
-        member.setRemark(escapeString(member.getRemark()));
+        member.setRemark(member.getRemark());
     }
 
     @Override
@@ -128,7 +128,7 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
                         item.setJoinDate(rs.getString(6));
                         item.setExpireDate(rs.getString(7));
                         item.setFee(rs.getInt(8));
-                        item.setRemark(escapeString(rs.getString(9)));
+                        item.setRemark(rs.getString(9));
                         items.add(item);
                     }
                 }
@@ -180,7 +180,7 @@ public class MemberDaoImp extends BaseDao implements MemberDao {
                         item.setJoinDate(rs.getString(6));
                         item.setExpireDate(rs.getString(7));
                         item.setFee(rs.getInt(8));
-                        item.setRemark(escapeString(rs.getString(9)));
+                        item.setRemark(rs.getString(9));
                     }
                 }
             }

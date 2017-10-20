@@ -35,13 +35,13 @@
        onclick="deleteCourse()">删除课程</a>
 </div>
 
-<div id="courseUpdateView" class="easyui-dialog" title="编辑课程" style="width:450px;height:350px;display:none;"
+<div id="courseUpdateView" class="easyui-dialog" title="编辑课程" style="width:600px;height:480px;display:none;padding:10px"
      data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
-    <table style="width:100%;">
+    <table style="width:100%">
         <tr>
-            <td>课程名:</td>
+            <td style="width:50px">课程名:</td>
             <td>
-                <input id="c_nameTxt" class="easyui-textbox" data-options="required:true" style="width:200px;">
+                <input id="c_nameTxt" class="easyui-textbox" data-options="required:true" style="width:100px;">
             </td>
             <td>难度:</td>
             <td><select id="c_rating" class="easyui-combobox" data-options="editable:false" style="width:50px;">
@@ -53,12 +53,8 @@
             </select></td>
         </tr>
         <tr>
-            <td>介绍:</td>
-            <td>
-                <input id="c_introTxt" class="easyui-textbox" data-options="required:true, multiline:true"
-                       style="width:200px;height:200px;">
-            </td>
-            <td colspan="2">
+            <td>头像:</td>
+            <td colspan="3">
                 <div>
                     <img id="c_avatarImg" src="../res/img/avatar.png" onerror="this.src='../res/img/avatar.png'"
                          style="width:128px;height:128px;">
@@ -71,13 +67,21 @@
             </td>
         </tr>
         <tr>
+            <td>介绍:</td>
+            <td colspan="3">
+                <!--<input id="c_introTxt" class="easyui-textbox" data-options="required:true, multiline:true"
+                       style="width:200px;height:200px;">-->
+                <textarea id="c_introTxt" name="c_introTxt"></textarea>
+            </td>
+        </tr>
+        <tr>
             <td><input id="c_idTxt" type="text" style="display:none"></td>
-            <td style="float:right;margin-right:5px;">
-                <div id="addCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
-                     onclick="addCourse()">增加课程
+            <td colspan="3">
+                <div id="addCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'"
+                     onclick="addCourse()" style="float:right">增加课程
                 </div>
-                <div id="updateCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
-                     onclick="updateCourse()">修改课程信息
+                <div id="updateCourseBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
+                     onclick="updateCourse()" style="float:right">修改课程信息
                 </div>
             </td>
             <td></td>

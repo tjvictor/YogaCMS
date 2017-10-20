@@ -1,10 +1,15 @@
 package yoga.dao.Imp;
 
-import org.springframework.stereotype.Component;
 import yoga.dao.TeacherDao;
 import yoga.model.Teacher;
 
-import java.sql.*;
+import org.springframework.stereotype.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ public class TeacherDaoImp extends BaseDao implements TeacherDao {
                         item.setId(rs.getString(1));
                         item.setName(rs.getString(2));
                         item.setAvatar(rs.getString(3));
-                        item.setIntroduction(escapeString(rs.getString(4)));
+                        item.setIntroduction(rs.getString(4));
                         items.add(item);
                     }
                 }
@@ -47,7 +52,7 @@ public class TeacherDaoImp extends BaseDao implements TeacherDao {
                 ps.executeUpdate();
             }
         }
-        teacher.setIntroduction(escapeString(teacher.getIntroduction()));
+        teacher.setIntroduction(teacher.getIntroduction());
     }
 
     @Override
@@ -62,7 +67,7 @@ public class TeacherDaoImp extends BaseDao implements TeacherDao {
                 ps.executeUpdate();
             }
         }
-        teacher.setIntroduction(escapeString(teacher.getIntroduction()));
+        teacher.setIntroduction(teacher.getIntroduction());
     }
 
     @Override

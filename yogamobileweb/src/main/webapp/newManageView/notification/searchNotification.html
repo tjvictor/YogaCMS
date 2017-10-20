@@ -39,19 +39,20 @@
     <div class="clear"></div>
 </div>
 
-<div id="notificationUpdateView" class="easyui-dialog" title="编辑通知" style="width:300px;height:380px;display:none;"
+<div id="notificationUpdateView" class="easyui-dialog" title="编辑通知" style="width:600px;height:400px;display:none;padding:20px"
      data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
-    <table>
+    <table style="width:100%">
         <tr>
-            <td>标题:</td>
+            <td style="width:50px">标题:</td>
             <td>
-                <input id="n_title" class="easyui-textbox" data-options="required:true" style="width:150px;">
+                <input id="n_title" class="easyui-textbox" data-options="required:true" style="width:100%;">
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <input id="n_content" class="easyui-textbox" data-options="required:true" style="width:150px;">
-                <textarea id="editor_id" name="content" style="width:200px;height:100px;">
+            <td>内容:</td>
+            <td>
+                <!--<input id="n_content" class="easyui-textbox" data-options="required:true" style="width:150px;">-->
+                <textarea id="n_content" name="n_content">
 
                 </textarea>
             </td>
@@ -59,10 +60,10 @@
         <tr>
             <td><input id="n_id" type="text" style="display:none"><input id="n_date" type="text" style="display:none"></td>
             <td style="float:right;margin-right:5px;">
-                <div id="addNotificationBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                <div id="addNotificationBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'"
                      onclick="addNotification()">增加通知
                 </div>
-                <div id="updateNotificationBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
+                <div id="updateNotificationBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
                      onclick="updateNotification()">修改通知
                 </div>
             </td>

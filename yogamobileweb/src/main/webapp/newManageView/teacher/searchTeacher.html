@@ -35,21 +35,17 @@
        onclick="deleteTeacher()">删除教练</a>
 </div>
 
-<div id="teacherUpdateView" class="easyui-dialog" title="编辑教练" style="width:450px;height:350px;display:none;"
+<div id="teacherUpdateView" class="easyui-dialog" title="编辑教练" style="width:600px;height:480px;display:none;padding:10px;"
      data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
-    <table style="width:400px;">
+    <table style="width:100%">
         <tr>
-            <td>姓名:</td>
-            <td colspan="2">
+            <td style="width:50px">姓名:</td>
+            <td>
                 <input id="t_nameTxt" class="easyui-textbox" data-options="required:true" style="width:200px;">
             </td>
         </tr>
-        <tr >
-            <td>介绍:</td>
-            <td>
-                <input id="t_introTxt" class="easyui-textbox" data-options="required:true, multiline:true" style="width:200px;height:200px;">
-                <textarea id="editor_id1" name="content" style="width:200px;height:100px;"></textarea>
-            </td>
+        <tr>
+            <td>头像:</td>
             <td>
                 <div>
                     <img id="t_avatarImg" src="../res/img/avatar.png" onerror="this.src='../res/img/avatar.png'" style="width:128px;height:128px;">
@@ -60,14 +56,21 @@
                 </div>
             </td>
         </tr>
+        <tr >
+            <td>介绍:</td>
+            <td>
+                <!--<input id="t_introTxt" class="easyui-textbox" data-options="required:true, multiline:true" style="width:200px;height:200px;">-->
+                <textarea id="t_introTxt" name="t_introTxt"></textarea>
+            </td>
+        </tr>
         <tr>
             <td><input id="t_idTxt" type="text" style="display:none"></td>
-            <td style="float:right;margin-right:5px;">
-                <div id="addTeacherBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
-                     onclick="addTeacher()">增加教练
+            <td style="float:right">
+                <div id="addTeacherBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'"
+                     onclick="addTeacher()" style="float:right">增加教练
                 </div>
-                <div id="updateTeacherBtn" class="easyui-linkbutton" data-options="iconCls:'icon-undo'"
-                     onclick="updateTeacher()">修改教练信息
+                <div id="updateTeacherBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
+                     onclick="updateTeacher()" style="float:right">修改教练信息
                 </div>
             </td>
             <td></td>

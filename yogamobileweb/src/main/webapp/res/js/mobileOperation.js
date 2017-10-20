@@ -219,3 +219,14 @@ function getNotificationByIdCallback(data){
     $('#n_page_content').html(data.callBackData.content);
 
 }
+
+function loadCoachTeamCallback(data){
+    $('#coachIconGroup').html('');
+    if(data.status == "ok" && data.callBackData.length > 0){
+        var teacherTemp = '';
+
+
+
+        $('#coachIconGroup').html($('#coachIconGroup').html()+teacherTemp);
+    }
+}

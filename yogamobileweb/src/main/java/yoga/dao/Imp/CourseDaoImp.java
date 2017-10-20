@@ -1,10 +1,15 @@
 package yoga.dao.Imp;
 
-import org.springframework.stereotype.Component;
 import yoga.dao.CourseDao;
 import yoga.model.Course;
 
-import java.sql.*;
+import org.springframework.stereotype.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +29,7 @@ public class CourseDaoImp extends BaseDao implements CourseDao {
                         item.setId(rs.getString(1));
                         item.setName(rs.getString(2));
                         item.setAvatar(rs.getString(3));
-                        item.setIntroduction(escapeString(rs.getString(4)));
+                        item.setIntroduction(rs.getString(4));
                         item.setRating(rs.getInt(5));
                         items.add(item);
                     }
@@ -49,7 +54,7 @@ public class CourseDaoImp extends BaseDao implements CourseDao {
                 ps.executeUpdate();
             }
         }
-        course.setIntroduction(escapeString(course.getIntroduction()));
+        course.setIntroduction(course.getIntroduction());
     }
 
     @Override
@@ -65,7 +70,7 @@ public class CourseDaoImp extends BaseDao implements CourseDao {
                 ps.executeUpdate();
             }
         }
-        course.setIntroduction(escapeString(course.getIntroduction()));
+        course.setIntroduction(course.getIntroduction());
     }
 
     @Override

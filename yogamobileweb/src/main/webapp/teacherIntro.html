@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>教练介绍</title>
-</head>
-<body>
-<h1>内容待定</h1>
-</body>
-</html>
+
+<script>
+    $(function() {
+        callAjax('/mobileService/getAllTeacherAvatar', '', 'loadCoachTeamCallback', '', '', '', '');
+    });
+</script>
+<div>Coach Team</div>
+<div style="height:1px;width:100%;background:#00CCFF;overflow:hidden;margin:0.5rem 0 0.5rem 0"></div>
+<div id="coachIconGroup">
+
+
+</div>
+<div style="clear:both"></div>

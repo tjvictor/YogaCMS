@@ -3,9 +3,11 @@ package yoga.rest.service;
 import yoga.dao.MemberDao;
 import yoga.dao.NotificationDao;
 import yoga.dao.SubScheduleDao;
+import yoga.dao.TeacherDao;
 import yoga.model.Member;
 import yoga.model.Notification;
 import yoga.model.SubSchedule;
+import yoga.model.Teacher;
 import yoga.rest.model.ResponseEntity;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -29,6 +31,9 @@ public class mobileService {
 
     @Autowired
     private MemberDao memberDaoImp;
+
+    @Autowired
+    private TeacherDao teacherDaoImp;
 
     @Autowired
     private SubScheduleDao subScheduleDaoImp;
@@ -156,6 +161,21 @@ public class mobileService {
         try {
             Notification item = notificationDaoImp.getNotificationById(id);
             return new ResponseEntity("ok", "查询成功", item);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping("/getAllTeacherAvatar")
+    public ResponseEntity getAllTeacherAvatar() {
+
+        try {
+            List<Teacher> items = teacherDaoImp.getTeachers();
+            //remove introduction to reduce the response size
+            for(Teacher item : items)
+                item.setIntroduction("");
+            return new ResponseEntity("ok", "查询成功", items);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");

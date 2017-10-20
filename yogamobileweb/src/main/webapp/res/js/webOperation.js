@@ -1,6 +1,8 @@
 /*Common Parameter*/
 var notificationKindeditor;
 var teacherKindeditor;
+var courseKindeditor;
+var memberKindeditor;
 /*Common Parameter*/
 
 
@@ -13,16 +15,35 @@ function memberSearch(){
 }
 
 function clearMember(){
-        $('#m_idTxt').val('');
-        $('#m_nameTxt').textbox('setValue', '');
-        $('#m_telTxt').textbox('setValue', '');
-        $('#m_passTxt').textbox('setValue', '');
-        $('#m_joinDateTxt').textbox('setValue', '');
-        $('#m_expireDateTxt').textbox('setValue', '');
-        $('#m_feeTxt').textbox('setValue', '0');
-        $('#m_remarkTxt').textbox('setValue', '');
-        $('#addMemberBtn').css('display','block');
-        $('#updateMemberBtn').css('display','block');
+    if(!memberKindeditor){
+        memberKindeditor = KindEditor.create('#m_remarkTxt',{
+            items: [
+                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'quickformat', 'selectall', '|', 
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+                    'table', 'hr', 'emoticons', 'pagebreak',
+                    'anchor', 'link', 'unlink'
+                    ],
+            width: "100%",
+            height: "100px",
+            resizeType : 0,
+            }
+        );
+    }
+    $('#m_idTxt').val('');
+    $('#m_nameTxt').textbox('setValue', '');
+    $('#m_telTxt').textbox('setValue', '');
+    $('#m_passTxt').textbox('setValue', '');
+    $('#m_joinDateTxt').textbox('setValue', '');
+    $('#m_expireDateTxt').textbox('setValue', '');
+    $('#m_feeTxt').textbox('setValue', '0');
+    /*$('#m_remarkTxt').textbox('setValue', '');*/
+    memberKindeditor.html('');
+    $('#addMemberBtn').css('display','block');
+    $('#updateMemberBtn').css('display','block');
 }
 
 function openMemberPanel(mode){
@@ -43,7 +64,8 @@ function openMemberPanel(mode){
             $('#m_joinDateTxt').textbox('setValue', row.joinDate);
             $('#m_expireDateTxt').textbox('setValue', row.expireDate);
             $('#m_feeTxt').textbox('setValue', row.fee);
-            $('#m_remarkTxt').textbox('setValue', $('<div>').html(row.remark).text());
+            /*$('#m_remarkTxt').textbox('setValue', $('<div>').html(row.remark).text());*/
+            memberKindeditor.html(row.remark);
             $('#addMemberBtn').css('display','none');
         }
     }
@@ -59,7 +81,8 @@ function updateMember() {
     var joinDate = $('#m_joinDateTxt').textbox('getValue');
     var expireDate = $('#m_expireDateTxt').textbox('getValue');
     var fee = $('#m_feeTxt').textbox('getValue');
-    var remark = $('#m_remarkTxt').textbox('getValue');
+    /*var remark = $('#m_remarkTxt').textbox('getValue');*/
+    var remark = memberKindeditor.html();
 
     var postValue = {
         "id": id,
@@ -98,7 +121,8 @@ function addMember() {
     var joinDate = $('#m_joinDateTxt').textbox('getValue');
     var expireDate = $('#m_expireDateTxt').textbox('getValue');
     var fee = $('#m_feeTxt').textbox('getValue');
-    var remark = $('#m_remarkTxt').textbox('getValue');
+    /*var remark = $('#m_remarkTxt').textbox('getValue');*/
+    var remark = memberKindeditor.html();
 
     var postValue = {
         "name": name,
@@ -182,11 +206,28 @@ function teacherSearchCallback(data) {
 }
 
 function clearTeacher(){
-
+    if(!teacherKindeditor){
+        teacherKindeditor = KindEditor.create('#t_introTxt',{
+            items: [
+                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'quickformat', 'selectall', '|', 
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+                    'table', 'hr', 'emoticons', 'pagebreak',
+                    'anchor', 'link', 'unlink'],
+            width: "100%",
+            height: "200px",
+            resizeType : 0,
+            }
+        );
+    }
     $('#t_idTxt').val('');
     $('#t_nameTxt').textbox('setValue', '');
     $('#t_avatarImg').attr('src', '../res/img/avatar.png');
-    $('#t_introTxt').textbox('setValue', '');
+    /*$('#t_introTxt').textbox('setValue', '');*/
+    teacherKindeditor.html('');
     $('#addTeacherBtn').css('display','block');
     $('#updateTeacherBtn').css('display','block');
 }
@@ -210,19 +251,6 @@ function uploadAvatar(fileElementId, imgId) {
 
 function openTeacherPanel(mode){
     clearTeacher();
-    if(!teacherKindeditor){
-    teacherKindeditor = KindEditor.create('#editor_id1',{
-            items: [
-                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
-                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-                    'superscript', 'quickformat', 'selectall', '|', '/',
-                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
-                    'table', 'hr', 'emoticons', 'pagebreak',
-                    'anchor', 'link', 'unlink'],}
-        );
-    }
     if(mode == "add"){
         $('#teacherUpdateView').dialog('open');
         $('#updateTeacherBtn').css('display','none');
@@ -234,7 +262,8 @@ function openTeacherPanel(mode){
             $('#t_idTxt').val(row.id);
             $('#t_nameTxt').textbox('setValue', row.name);
             $('#t_avatarImg').attr('src', row.avatar);
-            $('#t_introTxt').textbox('setValue', $('<div>').html(row.introduction).text());
+            /*$('#t_introTxt').textbox('setValue', $('<div>').html(row.introduction).text());*/
+            teacherKindeditor.html(row.introduction);
             $('#addTeacherBtn').css('display','none');
         }
     }
@@ -243,7 +272,8 @@ function openTeacherPanel(mode){
 function addTeacher() {
     var name = $('#t_nameTxt').textbox('getValue');
     var img = $('#t_avatarImg').attr('src');
-    var intro = $('#t_introTxt').textbox('getValue');
+    /*var intro = $('#t_introTxt').textbox('getValue');*/
+    var intro = teacherKindeditor.html();
 
     var postValue = {
         "name": name,
@@ -258,7 +288,8 @@ function updateTeacher(){
         var id = $('#t_idTxt').val();
         var name = $('#t_nameTxt').textbox('getValue');
         var img = $('#t_avatarImg').attr('src');
-        var intro = $('#t_introTxt').textbox('getValue');
+        /*var intro = $('#t_introTxt').textbox('getValue');*/
+        var intro = teacherKindeditor.html();
 
         var postValue = {
             "id" : id,
@@ -342,11 +373,28 @@ function courseSearchCallback(data) {
 }
 
 function clearCourse(){
-
+    if(!courseKindeditor){
+        courseKindeditor = KindEditor.create('#c_introTxt',{
+            items: [
+                    'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                    'superscript', 'quickformat', 'selectall', '|', 
+                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+                    'table', 'hr', 'emoticons', 'pagebreak',
+                    'anchor', 'link', 'unlink'],
+            width: "100%",
+            height: "100px",
+            resizeType : 0,
+            }
+        );
+    }
     $('#c_idTxt').val('');
     $('#c_nameTxt').textbox('setValue', '');
     $('#c_avatarImg').attr('src', '../res/img/avatar.png');
-    $('#c_introTxt').textbox('setValue', '');
+    /*$('#c_introTxt').textbox('setValue', '');*/
+    courseKindeditor.html('');
     $('#addCourseBtn').css('display','block');
     $('#updateCourseBtn').css('display','block');
 }
@@ -365,7 +413,8 @@ function openCoursePanel(mode){
             $('#c_nameTxt').textbox('setValue', row.name);
             $('#c_avatarImg').attr('src', row.avatar);
             $('#c_rating').combobox('select', row.rating);
-            $('#c_introTxt').textbox('setValue', $('<div>').html(row.introduction).text());
+            /*$('#c_introTxt').textbox('setValue', $('<div>').html(row.introduction).text());*/
+            courseKindeditor.html(row.introduction);
             $('#addCourseBtn').css('display','none');
         }
     }
@@ -374,7 +423,8 @@ function openCoursePanel(mode){
 function addCourse() {
     var name = $('#c_nameTxt').textbox('getValue');
     var img = $('#c_avatarImg').attr('src');
-    var intro = $('#c_introTxt').textbox('getValue');
+    /*var intro = $('#c_introTxt').textbox('getValue');*/
+    var intro = courseKindeditor.html();
 	var rating = $('#c_rating').textbox('getValue');
 
     var postValue = {
@@ -391,7 +441,8 @@ function updateCourse(){
         var id = $('#c_idTxt').val();
         var name = $('#c_nameTxt').textbox('getValue');
         var img = $('#c_avatarImg').attr('src');
-        var intro = $('#c_introTxt').textbox('getValue');
+        /*var intro = $('#c_introTxt').textbox('getValue');*/
+        var intro = courseKindeditor.html();
 		var rating = $('#c_rating').textbox('getValue');
 
         var postValue = {
@@ -882,28 +933,33 @@ function notificationSearchCallback(data) {
 }
 
 function clearNotification(){
-        $('#n_idTxt').val('');
-        $('#n_title').textbox('setValue', '');
-        $('#n_content').textbox('setValue', '');
-        $('#addNotificationBtn').css('display','block');
-        $('#updateNotificationBtn').css('display','block');
-}
-
-function openNotificationPanel(mode){
     if(!notificationKindeditor){
-        notificationKindeditor = KindEditor.create('#editor_id',{
+        notificationKindeditor = KindEditor.create('#n_content',{
             items: [
                     'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
                     'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-                    'superscript', 'quickformat', 'selectall', '|', '/',
+                    'superscript', 'quickformat', 'selectall', '|', 
                     'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
                     'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
                     'table', 'hr', 'emoticons', 'pagebreak',
                     'anchor', 'link', 'unlink'
-                    ]}
+                    ],
+            width: "100%",
+            height: "260px",
+            resizeType : 0,
+            }
         );
     }
+    $('#n_idTxt').val('');
+    $('#n_title').textbox('setValue', '');
+    /*$('#n_content').textbox('setValue', '');*/
+    notificationKindeditor.html('');
+    $('#addNotificationBtn').css('display','block');
+    $('#updateNotificationBtn').css('display','block');
+}
+
+function openNotificationPanel(mode){
     clearNotification();
     if(mode == "add"){
         $('#notificationUpdateView').dialog('open');
@@ -916,6 +972,7 @@ function openNotificationPanel(mode){
             $('#n_id').val(row.id);
             $('#n_title').textbox('setValue', row.title);
             $('#n_content').textbox('setValue', row.content);
+            notificationKindeditor.html(row.content);
             $('#n_date').textbox('setValue', row.date);
             $('#addNotificationBtn').css('display','none');
         }
@@ -925,7 +982,8 @@ function openNotificationPanel(mode){
 function addNotification() {
 
     var title = $('#n_title').textbox('getValue');
-    var content = $('#n_content').textbox('getValue');
+    //var content = $('#n_content').textbox('getValue');
+    var content = notificationKindeditor.html();
 
     var postValue = {
         "title": title,
@@ -952,7 +1010,8 @@ function updateNotification() {
 
     var id = $('#n_idTxt').val();
     var title = $('#n_title').textbox('getValue');
-    var content = $('#n_content').textbox('getValue');
+    //var content = $('#n_content').textbox('getValue');
+    var content = notificationKindeditor.html();
     var date = $('#n_date').textbox('getValue');
 
     var postValue = {
