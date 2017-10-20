@@ -971,9 +971,9 @@ function openNotificationPanel(mode){
             $('#notificationUpdateView').dialog('open');
             $('#n_id').val(row.id);
             $('#n_title').textbox('setValue', row.title);
-            $('#n_content').textbox('setValue', row.content);
+            /*$('#n_content').textbox('setValue', row.content);*/
             notificationKindeditor.html(row.content);
-            $('#n_date').textbox('setValue', row.date);
+            $('#n_date').val(row.date);
             $('#addNotificationBtn').css('display','none');
         }
     }
@@ -1008,11 +1008,11 @@ function addNotificationCallback(data){
 
 function updateNotification() {
 
-    var id = $('#n_idTxt').val();
+    var id = $('#n_id').val();
     var title = $('#n_title').textbox('getValue');
     //var content = $('#n_content').textbox('getValue');
     var content = notificationKindeditor.html();
-    var date = $('#n_date').textbox('getValue');
+    var date = $('#n_date').val();
 
     var postValue = {
         "id" : id,
