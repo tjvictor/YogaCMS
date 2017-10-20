@@ -3,8 +3,21 @@ function changeColor(child, parentId){
     $(child).css('color','green');
 }
 
+function loadPageToMain(page){
+    $('#mainContent').load(page);
+}
+
+function loadPageToMessageDialog(page){
+    $('#messageDialogContent').load(page);
+    $('#messageDialog').css('display','block')
+}
+
+function closeMessageDialog(){
+    $('#messageDialog').css('display','none');
+}
+
 function footTabChange(child, parentId, page){
-    $(mainContent).load(page);
+    loadPageToMain(page);
     changeColor(child, parentId);
 }
 
@@ -196,7 +209,8 @@ function getTop5NotificationCallback(data){
         for(var i=0; i < data.callBackData.length ; i++){
             var item = data.callBackData[i];
             var li_temp = '<li>';
-            li_temp += '<a href="notification.html?id='+item.id+'" style="list-style:none;height:0.6rem;line-height:0.6rem;">';
+            var idLink = "'type=notification&id="+item.id+"'"
+            li_temp += '<a onclick="getMessageContentById('+idLink+')" style="list-style:none;height:0.6rem;line-height:0.6rem;">';
             li_temp += '<span style="float:left;">'+ item.title +'</span>';
             li_temp += '<span style="float:right;">'+ item.date +'</span>';
             li_temp += '</a>';
@@ -210,14 +224,24 @@ function getTop5NotificationCallback(data){
     }
 }
 
-function getNotificationById(id){
-    callAjax('/mobileService/getNotificationById', '', 'getNotificationByIdCallback', '', '', id, '');
+function getMessageContentById(param){
+    callAjax('/mobileService/getContentByType', '', 'getContentByTypeCallback', '', '', param, '');
 }
+
+function getContentByTypeCallback(data){
+    $('#messageDialogContent').html('');
+    $('#messageDialog').css('display','block')
+    if(data.status == "error"){
+        $('#messageDialogContent').html(data.prompt);
+    }else {
+        $('#messageDialogContent').html(data.callBackData);
+    }
+}
+
 
 function getNotificationByIdCallback(data){
     $('#n_page_title').html(data.callBackData.title);
     $('#n_page_content').html(data.callBackData.content);
-
 }
 
 function loadCoachTeamCallback(data){
@@ -225,8 +249,53 @@ function loadCoachTeamCallback(data){
     if(data.status == "ok" && data.callBackData.length > 0){
         var teacherTemp = '';
 
+        var divHead = '<div style="width: 100%; margin: 0 auto;vertical-align: middle;text-align: center;background:rgb(255, 255, 255);border-radius:0.2rem; height:2.8rem">';
+        var divTail = '</div>';
 
+        for(var i = 0 ; i < data.callBackData.length ; i++){
+            var dataItem = data.callBackData[i];
+            var idLink = "'type=teacher&id="+dataItem.id+"'"
+            teacherTemp += '<a style="width:33%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" onclick="getMessageContentById('+idLink+')")>';
+            teacherTemp += '<div style="width:1.2rem;height:1.2rem;margin: 0 auto;">';
+            teacherTemp += '<img style="max-width:100%" src="'+dataItem.avatar+'"/></div>';
+            teacherTemp += '<p style="font-size:0.32rem;margin-top:0.2rem">'+dataItem.name+'</p>';
+            teacherTemp += '</a>';
 
-        $('#coachIconGroup').html($('#coachIconGroup').html()+teacherTemp);
+            if(i>0 && (i+1)%3 == 0){
+                $('#coachIconGroup').html($('#coachIconGroup').html()+divHead+teacherTemp+divTail);
+                teacherTemp = '';
+            }
+        }
+
+        if(teacherTemp != '')
+            $('#coachIconGroup').html($('#coachIconGroup').html()+divHead+teacherTemp+divTail);
+    }
+}
+
+function loadCourseCallback(data){
+    $('#courseIconGroup').html('');
+    if(data.status == "ok" && data.callBackData.length > 0){
+        var courseTemp = '';
+
+        var divHead = '<div style="width: 100%; margin: 0 auto;vertical-align: middle;text-align: center;background:rgb(255, 255, 255);border-radius:0.2rem; height:2.8rem">';
+        var divTail = '</div>';
+
+        for(var i = 0 ; i < data.callBackData.length ; i++){
+            var dataItem = data.callBackData[i];
+            var idLink = "'type=course&id="+dataItem.id+"'"
+            courseTemp += '<a style="width:33%; float:left; vertical-align: middle;text-align: center; height:2.72rem;padding-top:0.5rem" onclick="getMessageContentById('+idLink+')")>';
+            courseTemp += '<div style="width:1.2rem;height:1.2rem;margin: 0 auto;">';
+            courseTemp += '<img style="max-width:100%" src="'+dataItem.avatar+'"/></div>';
+            courseTemp += '<p style="font-size:0.32rem;margin-top:0.2rem">'+dataItem.name+'</p>';
+            courseTemp += '</a>';
+
+            if(i>0 && (i+1)%3 == 0){
+                $('#courseIconGroup').html($('#courseIconGroup').html()+divHead+courseTemp+divTail);
+                courseTemp = '';
+            }
+        }
+
+        if(courseTemp != '')
+            $('#courseIconGroup').html($('#courseIconGroup').html()+divHead+courseTemp+divTail);
     }
 }

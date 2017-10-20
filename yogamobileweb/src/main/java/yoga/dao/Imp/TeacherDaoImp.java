@@ -40,6 +40,28 @@ public class TeacherDaoImp extends BaseDao implements TeacherDao {
     }
 
     @Override
+    public Teacher getTeacherById(String id) throws SQLException {
+        String selectSql = String.format("select * from Teacher where Id = '%s' and IsDel = 0", id);
+
+        Teacher item = new Teacher();
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        item.setId(rs.getString(1));
+                        item.setName(rs.getString(2));
+                        item.setAvatar(rs.getString(3));
+                        item.setIntroduction(rs.getString(4));
+                    }
+                }
+            }
+        }
+
+        return item;
+    }
+
+    @Override
     public void insertTeacher(Teacher teacher) throws SQLException {
         try (Connection connection = DriverManager.getConnection(dbConnectString)){
             String insertSql = "insert into Teacher values(?,?,?,?,?)";

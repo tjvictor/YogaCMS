@@ -52,6 +52,19 @@
     <div class="window-mask-icon"></div>
     <div class="window-mask-layout"></div>
 </div>
+
+<div id="messageDialog" class="messageDialog-mask">
+    <div class="messageDialog-content">
+        <div style="float:right;">
+            <img src="/res/img/cancel.png" onclick="closeMessageDialog()">
+        </div>
+        <div style="clear:both"></div>
+        <div id="messageDialogContent" style="height:9rem; overflow:auto;opacity:1;background:white;border-radius:0.5rem;padding:0.3rem;">
+        </div>
+    </div>
+    <div class="messageDialog-layout"></div>
+</div>
+
 <!--dialog div-->
 <div id="globalReminder" style="position:absolute;display:none; width:100%; background:green;text-align:center;vertical-align: middle;top:0;left:0;z-index:9999;">
     <p style="color:white;height:0.5rem">操作成功</p>

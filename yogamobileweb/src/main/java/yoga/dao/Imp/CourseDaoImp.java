@@ -41,6 +41,28 @@ public class CourseDaoImp extends BaseDao implements CourseDao {
     }
 
     @Override
+    public Course getCourseById(String id) throws SQLException {
+        List<Course> items = new ArrayList<Course>();
+        String selectSql = String.format("select * from Course where id = '%s' and IsDel = 0", id);
+        Course item = new Course();
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        item.setId(rs.getString(1));
+                        item.setName(rs.getString(2));
+                        item.setAvatar(rs.getString(3));
+                        item.setIntroduction(rs.getString(4));
+                        item.setRating(rs.getInt(5));
+                    }
+                }
+            }
+        }
+
+        return item;
+    }
+
+    @Override
     public void insertCourse(Course course) throws SQLException {
         try (Connection connection = DriverManager.getConnection(dbConnectString)){
             String insertSql = "insert into Course values(?,?,?,?,?,?)";

@@ -1,9 +1,11 @@
 package yoga.rest.service;
 
+import yoga.dao.CourseDao;
 import yoga.dao.MemberDao;
 import yoga.dao.NotificationDao;
 import yoga.dao.SubScheduleDao;
 import yoga.dao.TeacherDao;
+import yoga.model.Course;
 import yoga.model.Member;
 import yoga.model.Notification;
 import yoga.model.SubSchedule;
@@ -31,6 +33,9 @@ public class mobileService {
 
     @Autowired
     private MemberDao memberDaoImp;
+
+    @Autowired
+    private CourseDao courseDaoImp;
 
     @Autowired
     private TeacherDao teacherDaoImp;
@@ -176,6 +181,46 @@ public class mobileService {
             for(Teacher item : items)
                 item.setIntroduction("");
             return new ResponseEntity("ok", "查询成功", items);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping("/getAllCourseAvatar")
+    public ResponseEntity getAllCourseAvatar() {
+
+        try {
+            List<Course> items = courseDaoImp.getCourses();
+            //remove introduction to reduce the response size
+            for(Course item : items)
+                item.setIntroduction("");
+            return new ResponseEntity("ok", "查询成功", items);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping("/getContentByType")
+    public ResponseEntity getContentByType(@RequestParam(value="type") String type, @RequestParam(value="id") String id) {
+
+        try {
+            ResponseEntity re = new ResponseEntity("ok", "查询成功", null);
+            switch (type){
+                case "teacher":
+                    re.setCallBackData(teacherDaoImp.getTeacherById(id).getIntroduction());
+                    break;
+                case "course":
+                    re.setCallBackData(courseDaoImp.getCourseById(id).getIntroduction());
+                    break;
+                case "notification":
+                    re.setCallBackData(notificationDaoImp.getNotificationById(id).getContent());
+                default:
+                    break;
+
+            }
+            return re;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");
