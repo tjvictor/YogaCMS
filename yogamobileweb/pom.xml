@@ -122,7 +122,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <jvmArguments>
-              -Dfile.encoding=UTF-8
+               -Dfile.encoding=UTF-8
               -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=6211
           </jvmArguments>
         </configuration>

@@ -80,7 +80,7 @@ function showCourse(data){
                     '<div style="clear:both;padding:0"></div>'+
                     '<div>教练: '+item.teacherName+'</div>'+
                     '<div>地点: '+item.location+'</div>'+
-                    '<div style="float:left">时间 11:30 - 12:30</div>'+
+                    '<div style="float:left">时间 '+item.startDateTime.split(' ')[1]+' - '+item.endDateTime.split(' ')[1]+'</div>'+
                     '<div style="float:right">已报'+item.subCount+'人 剩余'+item.remainCount+'人</div>'+
                 '</div>'+
                 '<div style="clear:both;width:100%;height:0.05rem;background-color:white;"></div>'+

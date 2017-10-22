@@ -1,5 +1,7 @@
 package yoga.rest.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.ClassUtils;
 import yoga.dao.CourseDao;
 import yoga.dao.MemberDao;
 import yoga.dao.NotificationDao;
@@ -65,6 +67,7 @@ public class websiteService {
     @Autowired
     private NotificationDao notificationDaoImp;
 
+
     @RequestMapping(value = "/insertMember", method = RequestMethod.POST)
     public ResponseEntity insertMember(@FormParam("name") String name, @FormParam("sex") String sex, @FormParam("tel") String tel,
                                        @FormParam("pwd") String pwd, @FormParam("joinDate") String joinDate, @FormParam("expireDate") String expireDate,
@@ -89,6 +92,7 @@ public class websiteService {
         item.setExpireDate(expireDate);
         item.setFee(fee);
         item.setRemark(remark);
+        item.setIsDel(0);
 
         try {
             memberDaoImp.insertMember(item);
@@ -173,6 +177,7 @@ public class websiteService {
         }
 
         MultipartFile sourceFile = fileRequest.getFile(requestFileName);
+        logger.info("dddddddddddd:"+ request.getSession().getServletContext().getRealPath("/"));
         String savePath = request.getSession().getServletContext().getRealPath("/") + "/upload/";
         String saveUrl = request.getContextPath() + "/upload/";
 

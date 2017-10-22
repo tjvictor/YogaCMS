@@ -89,6 +89,9 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
         List<SubSchedule> subSchedules = new ArrayList<SubSchedule>();
         String selectSql = "select count(0) from SubSchedule where scheduleId = '%s'";
 
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
                 for (Schedule scheduleItem : schedules)
@@ -98,8 +101,8 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
                             item.setScheduleId(scheduleItem.getId());
                             item.setCourseName(scheduleItem.getCourseName());
                             item.setTeacherName(scheduleItem.getTeacherName());
-                            item.setStartDateTime(scheduleItem.getStartDateTime());
-                            item.setEndDateTime(scheduleItem.getEndDateTime());
+                            item.setStartDateTime(df.format(df.parse(scheduleItem.getStartDateTime())));
+                            item.setEndDateTime(df.format(df.parse(scheduleItem.getEndDateTime())));
                             item.setLocation(scheduleItem.getLocation());
                             item.setCapacity(scheduleItem.getCapacity());
                             item.setCourseRating(scheduleItem.getCourseRating());
