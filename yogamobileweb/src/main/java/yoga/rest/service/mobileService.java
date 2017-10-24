@@ -1,15 +1,7 @@
 package yoga.rest.service;
 
-import yoga.dao.CourseDao;
-import yoga.dao.MemberDao;
-import yoga.dao.NotificationDao;
-import yoga.dao.SubScheduleDao;
-import yoga.dao.TeacherDao;
-import yoga.model.Course;
-import yoga.model.Member;
-import yoga.model.Notification;
-import yoga.model.SubSchedule;
-import yoga.model.Teacher;
+import yoga.dao.*;
+import yoga.model.*;
 import yoga.rest.model.ResponseEntity;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -46,6 +38,9 @@ public class mobileService {
     @Autowired
     private NotificationDao notificationDaoImp;
 
+    @Autowired
+    private ScheduleDao scheduleDaoImp;
+
     @RequestMapping("/getCourseList")
     public ResponseEntity getCourseList(@RequestParam(value="dateindex") int dateindex, @RequestParam(value="userId") String userId) {
 
@@ -65,13 +60,21 @@ public class mobileService {
     @RequestMapping("/insertSubSchedule")
     public ResponseEntity insertSubSchedule(@RequestParam(value="scheduleId") String scheduleId, @RequestParam(value="memberId") String memberId) {
 
+
+
         SubSchedule item = new SubSchedule();
         item.setId(UUID.randomUUID().toString());
         item.setScheduleId(scheduleId);
         item.setMemberId(memberId);
         try {
-            subScheduleDaoImp.insertSubSchedule(item);
-            return new ResponseEntity("ok", "预约成功", item.getId());
+            int subscribedCount = subScheduleDaoImp.getSubScheduleMemberCountByScheduleId(scheduleId);
+            Schedule schedule = scheduleDaoImp.getScheduleById(scheduleId);
+            if(schedule.getCapacity()>subscribedCount) {
+                subScheduleDaoImp.insertSubSchedule(item);
+                return new ResponseEntity("ok", "预约成功", item.getId());
+            }else {
+                return new ResponseEntity("error", "人数已满，无法预约");
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");

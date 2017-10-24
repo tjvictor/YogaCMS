@@ -18,4 +18,6 @@ public interface ScheduleDao {
     void deleteSchedule(String id) throws SQLException;
 
     void physicalDeleteSchedule(String id) throws SQLException;
+
+    Schedule getScheduleById(String scheduleId) throws SQLException;
 }

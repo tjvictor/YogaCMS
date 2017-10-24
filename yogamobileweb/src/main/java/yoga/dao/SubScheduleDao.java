@@ -20,4 +20,6 @@ public interface SubScheduleDao {
     void deleteSubSchedule(SubSchedule subSchedule) throws SQLException;
 
     void deleteSubSchedule(String id) throws SQLException;
+
+    int getSubScheduleMemberCountByScheduleId(String scheduleId) throws SQLException;
 }
