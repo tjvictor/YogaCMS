@@ -1,7 +1,5 @@
 package yoga.rest.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.ClassUtils;
 import yoga.dao.CourseDao;
 import yoga.dao.MemberDao;
 import yoga.dao.NotificationDao;
@@ -19,6 +17,7 @@ import yoga.rest.model.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +45,12 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 @RequestMapping("/websiteService")
 public class websiteService {
+
+    @Value("${image.MappingPath}")
+    private String imageMappingPath;
+
+    @Value("${image.MappingUrl}")
+    private String imageMappingUrl;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -177,9 +182,8 @@ public class websiteService {
         }
 
         MultipartFile sourceFile = fileRequest.getFile(requestFileName);
-        logger.info("dddddddddddd:"+ request.getSession().getServletContext().getRealPath("/"));
-        String savePath = request.getSession().getServletContext().getRealPath("/") + "/upload/";
-        String saveUrl = request.getContextPath() + "/upload/";
+        String savePath = imageMappingPath;
+        String saveUrl = request.getContextPath() + imageMappingUrl;
 
         String randomString = UUID.randomUUID().toString();
         String randomFileName = savePath + randomString;
