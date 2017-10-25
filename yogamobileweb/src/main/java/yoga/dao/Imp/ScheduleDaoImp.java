@@ -157,4 +157,29 @@ public class ScheduleDaoImp extends BaseDao implements ScheduleDao {
         String deleteSql = String.format("delete from Schedule where id = '%s'", id);
         delete(deleteSql);
     }
+
+    @Override
+    public Schedule getScheduleById(String scheduleId) throws SQLException {
+        String selectSql = String.format("SELECT Id, TeacherId, CourseId, StartTime, EndTime, Capacity, Status, Location, IsDel FROM Schedule where Id = '%s';", scheduleId);
+        Schedule item = new Schedule();
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        item.setId(rs.getString(1));
+                        item.setTeacherId(rs.getString(2));
+                        item.setCourseId(rs.getString(3));
+                        item.setStartDateTime(rs.getString(4));
+                        item.setEndDateTime(rs.getString(5));
+                        item.setCapacity(rs.getInt(6));
+                        item.setStatus(rs.getString(7));
+                        item.setLocation(rs.getString(8));
+                        item.setIsDel(rs.getInt(9));
+                    }
+                }
+            }
+        }
+
+        return item;
+    }
 }

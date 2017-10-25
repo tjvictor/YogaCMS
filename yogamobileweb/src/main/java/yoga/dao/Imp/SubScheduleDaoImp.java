@@ -7,6 +7,7 @@ import yoga.model.SubSchedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -115,7 +116,7 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
                     }
 
                 selectSql = "select id from SubSchedule where scheduleId = '%s' and memberId = '%s'";
-                for(SubSchedule subScheduleItem : subSchedules)
+                for (SubSchedule subScheduleItem : subSchedules)
                     try (ResultSet rs = stmt.executeQuery(String.format(selectSql, subScheduleItem.getScheduleId(), userId))) {
                         if (rs.next()) {
                             subScheduleItem.setId(rs.getString(1));
@@ -153,5 +154,21 @@ public class SubScheduleDaoImp extends BaseDao implements SubScheduleDao {
     public void deleteSubSchedule(String id) throws SQLException {
         String deleteSql = String.format("delete from SubSchedule where id = '%s';", id);
         delete(deleteSql);
+    }
+
+    @Override
+    public int getSubScheduleMemberCountByScheduleId(String scheduleId) throws SQLException {
+        String selectSql = String.format("select count(0) from SubSchedule where ScheduleId = '%s'", scheduleId);
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 }
