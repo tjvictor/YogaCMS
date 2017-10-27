@@ -299,3 +299,70 @@ function loadCourseCallback(data){
             $('#courseIconGroup').html($('#courseIconGroup').html()+divHead+courseTemp+divTail);
     }
 }
+
+function loadVideo(){
+    //callAjax('/mobileService/getVideos', '', 'getVideosCallback', '', '', '', '');
+    var data = '{"status":"ok", "prompt":"ok", "callBackData":[ {"name":"aaa", "type":"公开", "imgPath":"res/img/teacher.png", "videoPath":"http://vjs.zencdn.net/v/oceans.mp4"},{"name":"bbb", "type":"会员", "imgPath":"res/img/teacher.png", "videoPath":"http://www.w3school.com.cn/i/movie.ogg"}]}';
+    getVideosCallback(jQuery.parseJSON(data));
+}
+
+function getVideosCallback(data){
+    $('#videoFrame').html('');
+    var userId = Cookies.get("userId");
+
+    if(data.status == "ok" && data.callBackData.length > 0){
+        for(var i = 0 ; i < data.callBackData.length ; i++){
+            var dataItem = data.callBackData[i];
+            var videoTemp = '';
+            var videoPath = "'"+dataItem.videoPath+"'";
+            if( !userId && dataItem.type == '会员'){
+                videoPath = "'no permission'";
+            }
+            videoTemp += '<div style="width:100%;">';
+            videoTemp += '<div style="width:20%;float:left;border-right: 0.02rem solid #5DB1D6">';
+            videoTemp += '<img style="float:left;max-width:100%" src="'+dataItem.imgPath+'" onclick="play('+videoPath+');">';
+            videoTemp += '</div>';
+            videoTemp += '<div style="width:80%;float:left;">';
+            videoTemp += '<div>视频类型: '+dataItem.type+'</div>';
+            videoTemp += '<div>视频名称: '+dataItem.name+'</div>';
+            videoTemp += '</div>';
+            videoTemp += '</div>';
+            videoTemp += '<div style="clear:both;width:100%;height:0.05rem;background-color:white;"></div>';
+
+            $('#videoFrame').html($('#videoFrame').html()+videoTemp);
+        }
+
+    }
+}
+
+function play(url) {
+    $('.video-layout').css('display', 'block');
+    if (url == 'no permission') {
+        $('#no-Access').css('display', 'block');
+    } else {
+        $('#no-Access').css('display', 'none');
+
+        var videoInstance = '';
+        videoInstance += '<video id="my-video" style="width:100%" class="video-js" controls preload="auto" data-setup="{}">';
+        videoInstance += '<p class="vjs-no-js">';
+        videoInstance += 'To view this video please enable JavaScript, and consider upgrading to a web browser that';
+        videoInstance += '</p>';
+        videoInstance += '</video>';
+
+        $('#my-video-div').html(videoInstance);
+
+        var myPlayer = videojs('my-video');
+        myPlayer.src(url);
+        myPlayer.ready(function() {
+            myPlayer.play();
+        });
+    }
+}
+
+function closeVideoLayout() {
+    if($('#my-video').length>0){
+        var myPlayer = videojs('my-video');
+        myPlayer.dispose();
+    }
+    $('.video-layout').css('display', 'none');
+}

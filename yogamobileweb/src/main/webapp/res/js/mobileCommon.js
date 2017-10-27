@@ -59,3 +59,12 @@ function showToday(){
         win.addEventListener(resizeEvt, recalc, false);
         doc.addEventListener('DOMContentLoaded', recalc, false);
     })(document, window);
+
+function openPopReminder(prompt){
+    $('#popReminder').text(prompt);
+    $('.popReminder-layout').css('display','block');
+}
+
+function closePopReminder(){
+    $('.popReminder-layout').css('display','none');
+}
