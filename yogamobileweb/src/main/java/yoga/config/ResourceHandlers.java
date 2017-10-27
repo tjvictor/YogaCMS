@@ -16,11 +16,27 @@ public class ResourceHandlers extends WebMvcConfigurerAdapter {
     @Value("${image.MappingUrl}")
     private String imageMappingUrl;
 
+    @Value("${audio.MappingPath}")
+    private String audioMappingPath;
+
+    @Value("${audio.MappingUrl}")
+    private String audioMappingUrl;
+
+    @Value("${video.MappingPath}")
+    private String videoMappingPath;
+
+    @Value("${video.MappingUrl}")
+    private String videoMappingUrl;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String[] staticImageMappingPath = { "file:///"+imageMappingPath };
+        String[] staticAudioMappingPath = { "file:///"+audioMappingPath };
+        String[] staticVideoMappingPath = { "file:///"+videoMappingPath };
         String[] staticWebMappingPath = { "/"};
         registry.addResourceHandler(imageMappingUrl+"**").addResourceLocations(staticImageMappingPath);
+        registry.addResourceHandler(audioMappingUrl+"**").addResourceLocations(staticAudioMappingPath);
+        registry.addResourceHandler(videoMappingUrl+"**").addResourceLocations(staticVideoMappingPath);
         registry.addResourceHandler("/**").addResourceLocations(staticWebMappingPath);
         super.addResourceHandlers(registry);
     }
