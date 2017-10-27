@@ -41,6 +41,10 @@ public class mobileService {
     @Autowired
     private ScheduleDao scheduleDaoImp;
 
+    @Autowired
+    private VideoDao videoDaoImp;
+
+
     @RequestMapping("/getCourseList")
     public ResponseEntity getCourseList(@RequestParam(value="dateindex") int dateindex, @RequestParam(value="userId") String userId) {
 
@@ -229,5 +233,18 @@ public class mobileService {
             return new ResponseEntity("error", "系统错误，请联系系统管理员");
         }
     }
+
+    @RequestMapping("/getAllVideos")
+    public ResponseEntity getAllVideos() {
+
+        try {
+            List<Video> items = videoDaoImp.getAllVideos();
+            return new ResponseEntity("ok", "查询成功", items);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("error", "系统错误，请联系系统管理员");
+        }
+    }
+
 
 }

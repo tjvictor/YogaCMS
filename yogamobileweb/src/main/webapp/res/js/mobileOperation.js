@@ -301,9 +301,9 @@ function loadCourseCallback(data){
 }
 
 function loadVideo(){
-    //callAjax('/mobileService/getVideos', '', 'getVideosCallback', '', '', '', '');
-    var data = '{"status":"ok", "prompt":"ok", "callBackData":[ {"name":"aaa", "type":"公开", "imgPath":"res/img/teacher.png", "videoPath":"http://vjs.zencdn.net/v/oceans.mp4"},{"name":"bbb", "type":"会员", "imgPath":"res/img/teacher.png", "videoPath":"http://www.w3school.com.cn/i/movie.ogg"}]}';
-    getVideosCallback(jQuery.parseJSON(data));
+    callAjax('/mobileService/getAllVideos', '', 'getVideosCallback', '', '', '', '');
+    //var data = '{"status":"ok", "prompt":"ok", "callBackData":[ {"name":"aaa", "type":"公开", "imgPath":"res/img/teacher.png", "videoPath":"http://vjs.zencdn.net/v/oceans.mp4"},{"name":"bbb", "type":"会员", "imgPath":"res/img/teacher.png", "videoPath":"http://www.w3school.com.cn/i/movie.ogg"}]}';
+    //getVideosCallback(jQuery.parseJSON(data));
 }
 
 function getVideosCallback(data){
