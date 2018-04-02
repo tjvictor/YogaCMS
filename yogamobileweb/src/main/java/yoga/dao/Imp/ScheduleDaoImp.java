@@ -130,7 +130,7 @@ public class ScheduleDaoImp extends BaseDao implements ScheduleDao {
     @Override
     public void updateSchedule(Schedule schedule) throws SQLException {
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
-            String insertSql = "update Schedule set TeacherId=?, CourseId=?, StartTime=?, EndTime=?, Capacity=?, Location=? where id=?";
+            String insertSql = "update Schedule set TeacherId=?, CourseId=?, StartTime=?, EndTime=?, Capacity=?, Status=?, Location=? where id=?";
             try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
 
                 ps.setString(1, schedule.getTeacherId());
@@ -160,7 +160,7 @@ public class ScheduleDaoImp extends BaseDao implements ScheduleDao {
 
     @Override
     public Schedule getScheduleById(String scheduleId) throws SQLException {
-        String selectSql = String.format("SELECT Id, TeacherId, CourseId, StartTime, EndTime, Capacity, Status, Location, IsDel FROM Schedule where Id = '%s';", scheduleId);
+        String selectSql = String.format("SELECT s.Id, s.TeacherId, s.CourseId, s.StartTime, s.EndTime, s.Capacity, s.Status, s.Location, s.IsDel, t.Name,c.Name FROM Schedule s left join Teacher t on s.TeacherId=t.id left join Course c on s.CourseId=c.id where s.Id = '%s';", scheduleId);
         Schedule item = new Schedule();
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -175,6 +175,8 @@ public class ScheduleDaoImp extends BaseDao implements ScheduleDao {
                         item.setStatus(rs.getString(7));
                         item.setLocation(rs.getString(8));
                         item.setIsDel(rs.getInt(9));
+                        item.setTeacherName(rs.getString(10));
+                        item.setCourseName(rs.getString(11));
                     }
                 }
             }

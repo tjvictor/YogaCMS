@@ -197,12 +197,18 @@ function imgFormatter(value,row,index){
 }
 
 function scheduleCalendarOnSelect(date){
-    var dateString = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    var y = date.getFullYear();
+    var m = date.getMonth()+1;
+    var d = date.getDate();
+    var dateString = y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
     appendValueToTagbox('s_calendarbox', dateString);
 }
 
 function scheduleCalendarOnSingleSelect(date){
-    var dateString = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    var y = date.getFullYear();
+    var m = date.getMonth()+1;
+    var d = date.getDate();
+    var dateString = y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
     $('#s_calendarbox_edit').tagbox({value: dateString});
 }
 

@@ -643,6 +643,7 @@ function addScheduleCallback(data) {
     });
     if(data.status == "ok")
         $('#scheduleUpdateView').dialog('close');
+        scheduleSearch();
 }
 
 function updateScheduleCallback(data){
@@ -791,7 +792,7 @@ function openSubSchedulePanel(mode){
 }
 
 function getSubScheduledMembers(subScheduleId){
-    callAjax('/websiteService/getSubScheduledMembers', '', 'getSubScheduledMembersCallback', '', '', subScheduleId, '.window-mask')
+    callAjax('/websiteService/getSubScheduledMembers', '', 'getSubScheduledMembersCallback', '', '', subScheduleId, '.window-mask');
 }
 
 function getSubScheduledMembersCallback(data){
@@ -913,6 +914,35 @@ function updateSubScheduleCallback(data){
             $('#subScheduleUpdateView').dialog('close');
         }
 }
+
+function initializeSubSchedule(){
+    callAjax('/websiteService/getTeachers', '', 'teacherSearchSubScheduleCallback', '', '', '', '.window-mask');
+    callAjax('/websiteService/getCourses', '', 'courseSearchSubScheduleCallback', '', '', '', '.window-mask');
+}
+
+function teacherSearchSubScheduleCallback(data){
+    $.messager.show({
+        title: '操作提示',
+        msg: data.prompt,
+        timeout: 5000,
+    });
+    if (data.status == "ok") {
+        $('#s_teacherViewSelect').combobox('loadData', data.callBackData);
+    }
+}
+
+function courseSearchSubScheduleCallback(data){
+    $.messager.show({
+        title: '操作提示',
+        msg: data.prompt,
+        timeout: 5000,
+    });
+    if (data.status == "ok"){
+        $('#s_courseViewSelect').combobox('loadData', data.callBackData);
+    }
+}
+
+
 /*subSchedule region*/
 
 /*notification region*/

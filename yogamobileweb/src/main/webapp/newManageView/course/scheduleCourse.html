@@ -5,218 +5,246 @@
     <title>课程安排</title>
 </head>
 <body>
-<table id="scheduleView" class="easyui-datagrid" style="width:100%;height:auto"
-       data-options="
+<script>
+    $(function () {
+        $.parser.parse('#mgtContentDiv');
+        initializeSubSchedule();
+    });
+
+</script>
+<div id="mgtContentDiv">
+    <table id="scheduleView" class="easyui-datagrid" style="width:100%;height:auto"
+           data-options="
 				iconCls: 'icon-edit',
 				singleSelect: true,
 				toolbar: '#scheduleViewTool',
                 singleSelect:true,
                 idField: 'id',
 			">
-    <thead>
-    <tr>
-        <th data-options="field:'id',hidden:true,width:80">Id</th>
-        <th data-options="field:'courseName',width:100">课程名</th>
-        <th data-options="field:'teacherName',width:100">教练</th>
-        <th data-options="field:'location',width:100">地点</th>
-        <th data-options="field:'date',width:100">日期</th>
-        <th data-options="field:'startTime',width:80">开始时间</th>
-        <th data-options="field:'endTime',width:80">结束时间</th>
-        <th data-options="field:'capacity',width:80">容纳人数</th>
-        <th data-options="field:'status',width:50">状态</th>
-        <th data-options="field:'teacherId',hidden:true,width:50">teacherId</th>
-        <th data-options="field:'courseId',hidden:true,width:50">courseId</th>
-    </tr>
-    </thead>
-</table>
-<div id="scheduleViewTool" style="height:auto">
-    <div style="float:left;">
-        <span style="font-size:1rem">课程名:</span>
-        <select id="s_courseViewSelect" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name'" style="width:80px;"></select>
-        <span style="font-size:1rem">教练名:</span>
-        <select id="s_teacherViewSelect" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name'" style="width:80px;"></select>
-        <span style="font-size:1rem">开始日期:</span>
-        <input id="s_startDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc1'" style="width:100px;">
-        <span style="font-size:1rem">结束日期:</span>
-        <input id="s_endDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc1'" style="width:100px;">
-        <div id="cc1" class="easyui-calendar"></div>
-    </div>
-    <div class="datagrid-btn-separator" style="margin-left:20px"></div>
-    <div style="float:left;">
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
-           onclick="scheduleSearch()">查询</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
-           onclick="resetScheduleSearch()">重置</a>
-    </div>
-    <div class="clear"></div>
-    <div >
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
-           onclick="openSchedulePanel('add')">新增课程安排</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
-           onclick="openSchedulePanel('edit')">编辑课程安排</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
-           onclick="deleteSchedule()">删除课程安排</a>
-    </div>
-
-</div>
-
-<div id="scheduleUpdateView" class="easyui-dialog" title="编辑课程安排" style="width:450px;height:350px;display:none;"
-     data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
-    <table style="width:100%;">
+        <thead>
         <tr>
-            <td>教练:</td>
-            <td>
-                <select id="s_teacherSelect" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name'" style="width:100px;">
-                </select>
-            </td>
-            <td>课程:</td>
-            <td>
-                <select id="s_courseSelect" class="easyui-combobox" data-options="editable:false,valueField:'id',textField:'name'" style="width:100px;">
-                </select>
-            </td>
+            <th data-options="field:'id',hidden:true,width:80">Id</th>
+            <th data-options="field:'courseName',width:100">课程名</th>
+            <th data-options="field:'teacherName',width:100">教练</th>
+            <th data-options="field:'location',width:100">地点</th>
+            <th data-options="field:'date',width:100">日期</th>
+            <th data-options="field:'startTime',width:80">开始时间</th>
+            <th data-options="field:'endTime',width:80">结束时间</th>
+            <th data-options="field:'capacity',width:80">容纳人数</th>
+            <th data-options="field:'status',width:50">状态</th>
+            <th data-options="field:'teacherId',hidden:true,width:50">teacherId</th>
+            <th data-options="field:'courseId',hidden:true,width:50">courseId</th>
         </tr>
-        <tr>
-            <td>地点:</td>
-            <td>
-                <select id="s_locationSelect" class="easyui-combobox" data-options="editable:false" style="width:100px;">
-                    <option value="康桥郡">康桥郡</option>
-                    <option value="开发区">开发区</option>
-                </select>
-            </td>
-            <td>容纳人数:</td>
-            <td><input id="s_capcityTxt" class="easyui-textbox" data-options="required:true" style="width:50px;"></td>
-        </tr>
-        <tr id="s_viewMode">
-            <td >课程日期:<br/>(可多选)</td>
-            <td colspan="3">
-                <div style="float:left;">
-                    <div id="s_calendar" class="easyui-calendar" data-options="onSelect:scheduleCalendarOnSelect" style="width:180px;height:180px;"></div>
-                </div>
-                <div style="float:left;margin-left:5px;">
-                    <input class="easyui-tagbox" id="s_calendarbox" style="width:100px;">
-                </div>
-            </td>
-        </tr>
-        <tr id="s_editMode">
-            <td >课程日期:<br/>(单选)</td>
-            <td colspan="3">
-                <div style="float:left;">
-                    <div id="s_calendar_edit" class="easyui-calendar" data-options="onSelect:scheduleCalendarOnSingleSelect" style="width:180px;height:180px;"></div>
-                </div>
-                <div style="float:left;margin-left:5px;">
-                    <input class="easyui-tagbox" id="s_calendarbox_edit" style="width:100px;">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>开始时间:</td>
-            <td>
-                <select id="s_startTimeHourSelect" class="easyui-combobox" data-options="editable:false" style="width:50px;">
-                    <option value="0">00</option>
-                    <option value="1">01</option>
-                    <option value="2">02</option>
-                    <option value="3">03</option>
-                    <option value="4">04</option>
-                    <option value="5">05</option>
-                    <option value="6">06</option>
-                    <option value="7">07</option>
-                    <option value="8">08</option>
-                    <option value="9">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                </select>
-                <span>:</span>
-                <select id="s_startTimeMinuteSelect" class="easyui-combobox" data-options="editable:false" style="width:50px;">
-                    <option value="0">00</option>
-                    <option value="5">05</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="30">30</option>
-                    <option value="35">35</option>
-                    <option value="40">40</option>
-                    <option value="45">45</option>
-                    <option value="50">50</option>
-                    <option value="55">55</option>
-                </select>
-            </td>
-            <td>结束时间:</td>
-            <td>
-                <select id="s_endTimeHourSelect" class="easyui-combobox" data-options="editable:false" style="width:50px;">
-                    <option value="0">00</option>
-                    <option value="1">01</option>
-                    <option value="2">02</option>
-                    <option value="3">03</option>
-                    <option value="4">04</option>
-                    <option value="5">05</option>
-                    <option value="6">06</option>
-                    <option value="7">07</option>
-                    <option value="8">08</option>
-                    <option value="9">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                </select>
-                <span>:</span>
-                <select id="s_endTimeMinuteSelect" class="easyui-combobox" data-options="editable:false" style="width:50px;">
-                    <option value="0">00</option>
-                    <option value="5">05</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="30">30</option>
-                    <option value="35">35</option>
-                    <option value="40">40</option>
-                    <option value="45">45</option>
-                    <option value="50">50</option>
-                    <option value="55">55</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>状态:</td>
-            <td>
-                <select id="s_status" class="easyui-combobox" data-options="editable:false" style="width:100px;">
-                    <option value="开放" selected>开放</option>
-                    <option value="取消">取消</option>
-                </select>
-            </td>
-            <td><input id="s_idTxt" type="text" style="display:none"></td>
-            <td style="float:right;margin-right:5px;">
-                <div id="addScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'"
-                     onclick="addSchedule()">增加安排
-                </div>
-                <div id="updateScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
-                     onclick="updateSchedule()">修改安排信息
-                </div>
-            </td>
-        </tr>
+        </thead>
     </table>
+    <div id="scheduleViewTool" style="height:auto">
+        <div style="float:left;">
+            <span style="font-size:1rem">课程名:</span>
+            <select id="s_courseViewSelect" class="easyui-combobox"
+                    data-options="editable:true,valueField:'id',textField:'name'" style="width:80px;">
+
+            </select>
+            <span style="font-size:1rem">教练名:</span>
+            <select id="s_teacherViewSelect" class="easyui-combobox"
+                    data-options="editable:true,valueField:'id',textField:'name'" style="width:80px;">
+
+            </select>
+            <span style="font-size:1rem">开始日期:</span>
+            <input id="s_startDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc1'"
+                   style="width:100px;">
+            <span style="font-size:1rem">结束日期:</span>
+            <input id="s_endDateViewTxt" class="easyui-datebox" data-options="editable:false, sharedCalendar:'#cc1'"
+                   style="width:100px;">
+            <div id="cc1" class="easyui-calendar"></div>
+        </div>
+        <div class="datagrid-btn-separator" style="margin-left:20px"></div>
+        <div style="float:left;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+               onclick="scheduleSearch()">查询</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
+               onclick="resetScheduleSearch()">重置</a>
+        </div>
+        <div class="clear"></div>
+        <div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
+               onclick="openSchedulePanel('add')">新增课程安排</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
+               onclick="openSchedulePanel('edit')">编辑课程安排</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
+               onclick="deleteSchedule()">删除课程安排</a>
+        </div>
+
+    </div>
+
+    <div id="scheduleUpdateView" class="easyui-dialog" title="编辑课程安排" style="width:450px;height:350px;display:none;"
+         data-options="iconCls:'icon-save',resizable:false,modal:true,closed:true">
+        <table style="width:100%;">
+            <tr>
+                <td>教练:</td>
+                <td>
+                    <select id="s_teacherSelect" class="easyui-combobox"
+                            data-options="editable:false,valueField:'id',textField:'name'" style="width:100px;">
+                    </select>
+                </td>
+                <td>课程:</td>
+                <td>
+                    <select id="s_courseSelect" class="easyui-combobox"
+                            data-options="editable:false,valueField:'id',textField:'name'" style="width:100px;">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>地点:</td>
+                <td>
+                    <select id="s_locationSelect" class="easyui-combobox" data-options="editable:false"
+                            style="width:100px;">
+                        <option value="康桥郡">康桥郡</option>
+                        <option value="开发区">开发区</option>
+                    </select>
+                </td>
+                <td>容纳人数:</td>
+                <td><input id="s_capcityTxt" class="easyui-textbox" data-options="required:true" style="width:50px;">
+                </td>
+            </tr>
+            <tr id="s_viewMode">
+                <td>课程日期:<br/>(可多选)</td>
+                <td colspan="3">
+                    <div style="float:left;">
+                        <div id="s_calendar" class="easyui-calendar" data-options="onSelect:scheduleCalendarOnSelect"
+                             style="width:180px;height:180px;"></div>
+                    </div>
+                    <div style="float:left;margin-left:5px;">
+                        <input class="easyui-tagbox" id="s_calendarbox" style="width:100px;">
+                    </div>
+                </td>
+            </tr>
+            <tr id="s_editMode">
+                <td>课程日期:<br/>(单选)</td>
+                <td colspan="3">
+                    <div style="float:left;">
+                        <div id="s_calendar_edit" class="easyui-calendar"
+                             data-options="onSelect:scheduleCalendarOnSingleSelect"
+                             style="width:180px;height:180px;"></div>
+                    </div>
+                    <div style="float:left;margin-left:5px;">
+                        <input class="easyui-tagbox" id="s_calendarbox_edit" style="width:100px;">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>开始时间:</td>
+                <td>
+                    <select id="s_startTimeHourSelect" class="easyui-combobox" data-options="editable:false"
+                            style="width:50px;">
+                        <option value="00">00</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                    </select>
+                    <span>:</span>
+                    <select id="s_startTimeMinuteSelect" class="easyui-combobox" data-options="editable:false"
+                            style="width:50px;">
+                        <option value="00">00</option>
+                        <option value="05">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
+                </td>
+                <td>结束时间:</td>
+                <td>
+                    <select id="s_endTimeHourSelect" class="easyui-combobox" data-options="editable:false"
+                            style="width:50px;">
+                        <option value="00">00</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                    </select>
+                    <span>:</span>
+                    <select id="s_endTimeMinuteSelect" class="easyui-combobox" data-options="editable:false"
+                            style="width:50px;">
+                        <option value="00">00</option>
+                        <option value="05">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>状态:</td>
+                <td>
+                    <select id="s_status" class="easyui-combobox" data-options="editable:false" style="width:100px;">
+                        <option value="开放" selected>开放</option>
+                        <option value="取消">取消</option>
+                    </select>
+                </td>
+                <td><input id="s_idTxt" type="text" style="display:none"></td>
+                <td style="float:right;margin-right:5px;">
+                    <div id="addScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'"
+                         onclick="addSchedule()">增加安排
+                    </div>
+                    <div id="updateScheduleBtn" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
+                         onclick="updateSchedule()">修改安排信息
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>

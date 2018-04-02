@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
@@ -346,7 +347,7 @@ public class websiteService {
         try {
             for (Schedule item : scheduleList)
                 scheduleDaoImp.insertSchedule(item);
-            return new ResponseEntity("ok", "插入成功, 请刷新查看", null);
+            return new ResponseEntity("ok", "插入成功", null);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseEntity("error", "系统错误，请联系系统管理员");
@@ -374,18 +375,19 @@ public class websiteService {
                                          @FormParam("endTime") String endTime, @FormParam("status") String status) {
 
 
-            Schedule scheduleItem = new Schedule();
-            scheduleItem.setId(id);
-            scheduleItem.setTeacherId(teacherId);
-            scheduleItem.setCourseId(courseId);
-            scheduleItem.setLocation(location);
-            scheduleItem.setCapacity(capacity);
-            scheduleItem.setStatus(status);
-            scheduleItem.setStartDateTime(String.format("%s %s", dateList, startTime));
-            scheduleItem.setEndDateTime(String.format("%s %s", dateList, endTime));
+        Schedule scheduleItem = new Schedule();
+        scheduleItem.setId(id);
+        scheduleItem.setTeacherId(teacherId);
+        scheduleItem.setCourseId(courseId);
+        scheduleItem.setLocation(location);
+        scheduleItem.setCapacity(capacity);
+        scheduleItem.setStatus(status);
+        scheduleItem.setStartDateTime(String.format("%s %s", dateList, startTime));
+        scheduleItem.setEndDateTime(String.format("%s %s", dateList, endTime));
 
         try {
-                scheduleDaoImp.updateSchedule(scheduleItem);
+            scheduleDaoImp.updateSchedule(scheduleItem);
+            scheduleItem = scheduleDaoImp.getScheduleById(id);
             return new ResponseEntity("ok", "修改成功", scheduleItem);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
